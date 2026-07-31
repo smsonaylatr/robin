@@ -1,0 +1,215 @@
+{
+    "timestamp": "2025-11-19 19:05:24",
+    "type": "HEMENPAY_WITHDRAW",
+    "method": "HMEN_HAVALE",
+    "withdrawal_id": 70,
+    "user_id": 1818,
+    "username": "Fred41",
+    "amount": "150",
+    "api_url": "https:\/\/api.hemenode.biz\/trader\/set-withdraw",
+    "request_data": {
+        "Key": "-",
+        "PlayerID": 1818,
+        "PlayerUserName": "Fred41",
+        "PlayerFullName": "Aynur Bitek",
+        "PlayerIdentityNumber": 12575633316,
+        "PlayerPhoneNumber": "05067870756",
+        "PlayerEmail": "bitekaynur72@gmail.com",
+        "TraderTransactionID": 70,
+        "AccountNumber": "TR900006701000000027807311",
+        "Amount": "150",
+        "PaymentMethodID": "633416cf4f3595f9463f5589",
+        "BankID": "5f748545bffe7236203e56b0",
+        "checksum": "59891b96df19ec5393ccc74203b2c4eb"
+    },
+    "headers": [
+        "Content-Type: application\/json"
+    ]
+}
+
+{
+    "timestamp": "2025-11-19 19:05:24",
+    "type": "HEMENPAY_RESPONSE",
+    "withdrawal_id": 70,
+    "response": "{\"$id\":\"1\",\"HasError\":true,\"Description\":\"Invalid Provider API Key\",\"Data\":\"\",\"ID\":101}",
+    "response_array": {
+        "$id": "1",
+        "HasError": true,
+        "Description": "Invalid Provider API Key",
+        "Data": "",
+        "ID": 101
+    }
+}
+
+{
+    "timestamp": "2025-11-19 19:05:31",
+    "type": "HEMENPAY_WITHDRAW",
+    "method": "HMEN_HAVALE",
+    "withdrawal_id": 70,
+    "user_id": 1818,
+    "username": "Fred41",
+    "amount": "150",
+    "api_url": "https:\/\/api.hemenode.biz\/trader\/set-withdraw",
+    "request_data": {
+        "Key": "-",
+        "PlayerID": 1818,
+        "PlayerUserName": "Fred41",
+        "PlayerFullName": "Aynur Bitek",
+        "PlayerIdentityNumber": 12575633316,
+        "PlayerPhoneNumber": "05067870756",
+        "PlayerEmail": "bitekaynur72@gmail.com",
+        "TraderTransactionID": 70,
+        "AccountNumber": "TR900006701000000027807311",
+        "Amount": "150",
+        "PaymentMethodID": "633416cf4f3595f9463f5589",
+        "BankID": "5f748545bffe7236203e56b0",
+        "checksum": "59891b96df19ec5393ccc74203b2c4eb"
+    },
+    "headers": [
+        "Content-Type: application\/json"
+    ]
+}
+
+{
+    "timestamp": "2025-11-19 19:05:31",
+    "type": "HEMENPAY_RESPONSE",
+    "withdrawal_id": 70,
+    "response": "{\"$id\":\"1\",\"HasError\":true,\"Description\":\"Trader Transaction ID Exist\",\"Data\":\"\",\"ID\":101}",
+    "response_array": {
+        "$id": "1",
+        "HasError": true,
+        "Description": "Trader Transaction ID Exist",
+        "Data": "",
+        "ID": 101
+    }
+}
+
+{
+    "timestamp": "2025-12-29 12:21:16",
+    "type": "HEMENPAY_WITHDRAW",
+    "method": "HMEN_HAVALE",
+    "withdrawal_id": 89,
+    "user_id": 1864,
+    "username": "Ahmet543543",
+    "amount": "350",
+    "api_url": "https:\/\/api.hemenode.biz\/trader\/set-withdraw",
+    "request_data": {
+        "Key": "-",
+        "PlayerID": 1864,
+        "PlayerUserName": "Ahmet543543",
+        "PlayerFullName": "Ahmet Aktaş",
+        "PlayerIdentityNumber": 37114724638,
+        "PlayerPhoneNumber": "5375986561",
+        "PlayerEmail": "asminaktas664@gmail.com",
+        "TraderTransactionID": 89,
+        "AccountNumber": "TR160006200048400006655608",
+        "Amount": "350",
+        "PaymentMethodID": "633416cf4f3595f9463f5589",
+        "BankID": "5f748545bffe7236203e56b0",
+        "checksum": "12c7bfba5a772cf902ba31c2fe11368c"
+    },
+    "headers": [
+        "Content-Type: application\/json"
+    ]
+}
+
+{
+    "timestamp": "2025-12-29 12:21:16",
+    "type": "HEMENPAY_RESPONSE",
+    "withdrawal_id": 89,
+    "response": "{\"$id\":\"1\",\"HasError\":true,\"Description\":\"Invalid Provider API Key\",\"Data\":\"\",\"ID\":101}",
+    "response_array": {
+        "$id": "1",
+        "HasError": true,
+        "Description": "Invalid Provider API Key",
+        "Data": "",
+        "ID": 101
+    }
+}
+
+{
+    "timestamp": "2025-12-29 12:21:26",
+    "type": "HEMENPAY_WITHDRAW",
+    "method": "HMEN_HAVALE",
+    "withdrawal_id": 86,
+    "user_id": 1867,
+    "username": "Asolita01",
+    "amount": "2400",
+    "api_url": "https:\/\/api.hemenode.biz\/trader\/set-withdraw",
+    "request_data": {
+        "Key": "-",
+        "PlayerID": 1867,
+        "PlayerUserName": "Asolita01",
+        "PlayerFullName": "Gamze Tanaoğlu",
+        "PlayerIdentityNumber": 12634369712,
+        "PlayerPhoneNumber": "05011405275",
+        "PlayerEmail": "cengizgamze.01@gmail.com",
+        "TraderTransactionID": 86,
+        "AccountNumber": "TR93 0015 7000 0000 0145 7568 52",
+        "Amount": "2400",
+        "PaymentMethodID": "633416cf4f3595f9463f5589",
+        "BankID": "5f748545bffe7236203e56b0",
+        "checksum": "b8f1aff50b5ec819531af8a2415e33a1"
+    },
+    "headers": [
+        "Content-Type: application\/json"
+    ]
+}
+
+{
+    "timestamp": "2025-12-29 12:21:26",
+    "type": "HEMENPAY_RESPONSE",
+    "withdrawal_id": 86,
+    "response": "{\"$id\":\"1\",\"HasError\":true,\"Description\":\"Invalid Provider API Key\",\"Data\":\"\",\"ID\":101}",
+    "response_array": {
+        "$id": "1",
+        "HasError": true,
+        "Description": "Invalid Provider API Key",
+        "Data": "",
+        "ID": 101
+    }
+}
+
+{
+    "timestamp": "2025-12-29 12:21:29",
+    "type": "HEMENPAY_WITHDRAW",
+    "method": "HMEN_HAVALE",
+    "withdrawal_id": 74,
+    "user_id": 1800,
+    "username": "ankrcpy06",
+    "amount": "3700",
+    "api_url": "https:\/\/api.hemenode.biz\/trader\/set-withdraw",
+    "request_data": {
+        "Key": "-",
+        "PlayerID": 1800,
+        "PlayerUserName": "ankrcpy06",
+        "PlayerFullName": "Recep Yilmaz",
+        "PlayerIdentityNumber": 35272509654,
+        "PlayerPhoneNumber": "05061921296",
+        "PlayerEmail": "ankrcpy@gmail.com",
+        "TraderTransactionID": 74,
+        "AccountNumber": "TR44 0001 0009 0770 9944 4650 02",
+        "Amount": "3700",
+        "PaymentMethodID": "633416cf4f3595f9463f5589",
+        "BankID": "5f748545bffe7236203e56b0",
+        "checksum": "0dd017765827896a3f1072db335750e5"
+    },
+    "headers": [
+        "Content-Type: application\/json"
+    ]
+}
+
+{
+    "timestamp": "2025-12-29 12:21:29",
+    "type": "HEMENPAY_RESPONSE",
+    "withdrawal_id": 74,
+    "response": "{\"$id\":\"1\",\"HasError\":true,\"Description\":\"Invalid Provider API Key\",\"Data\":\"\",\"ID\":101}",
+    "response_array": {
+        "$id": "1",
+        "HasError": true,
+        "Description": "Invalid Provider API Key",
+        "Data": "",
+        "ID": 101
+    }
+}
+

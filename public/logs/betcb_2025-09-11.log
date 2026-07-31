@@ -1,0 +1,684 @@
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 20:22:13",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97d9e03fbc5657df-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 770,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-11 20:22:13"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 20:22:14",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Content-Length": "730",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "Host": "betedor101.com",
+        "Cf-Ray": "97d9e041feebfe50-FRA",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":27,\"total_odds\":\"3.33\",\"potential_win\":\"33.28\",\"selections\":[{\"eventId\":\"1024872218\",\"match\":\"\",\"market\":\"Kazanan\",\"selection\":\"Evsahibi Kazan\\u0131r\",\"odds\":1.04000000000000003552713678800500929355621337890625,\"bet_type\":\"\",\"match_info\":{\"home\":\"Roma (W)\",\"away\":\"Sporting CP (W)\",\"league\":\"Champions League Qual. (W)\",\"date\":\"12.09.2025, 00:30\"}},{\"eventId\":\"1022037477\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"New York Yankees\",\"away\":\"Detroit Tigers\",\"league\":\"Ana Beysbol Ligi\",\"date\":\"12.09.2025, 05:05\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 27
+Toplam Oran: 3.33
+Potansiyel Kazanç: 33.28 TL
+Seçim Sayısı: 2
+Önceki Bakiye: 770 TL
+Yeni Bakiye: 760 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_27_1757622134
+Kupon Detay ID: 24
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: Evsahibi Kazanır
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Kazanan
+    Seçim: Evsahibi Kazanır
+    Oran: 1.04
+    Bahis Tipi: 
+    Event ID: 1024872218
+  Seçim 2:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1022037477
+Timestamp: 2025-09-11 20:22:14
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 27,
+        "total_odds": "3.33",
+        "potential_win": "33.28",
+        "selections_count": 2,
+        "previous_balance": 770,
+        "new_balance": 760,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_27_1757622134",
+        "kupon_detay_id": "24",
+        "karsilasma": "",
+        "secenek": "Evsahibi Kazanır",
+        "timestamp": "2025-09-11 20:22:14"
+    },
+    "timestamp": "2025-09-11 20:22:14"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:16:28",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97da8796ddf818e2-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 760,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-11 22:16:28"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:16:28",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Content-Length": "844",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "Host": "betedor101.com",
+        "Cf-Ray": "97da87985c789271-FRA",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":28,\"total_odds\":\"2.99\",\"potential_win\":\"29.93\",\"selections\":[{\"eventId\":\"1024832498\",\"match\":\"Atletico Tucuman Reserves vs River Plate Reserves\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":1.729999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"Atletico Tucuman Reserves\",\"away\":\"River Plate Reserves\",\"league\":\"Reserves Leagues U23\",\"date\":\"12.09.2025, 03:00\"}},{\"eventId\":\"1024832498\",\"match\":\"Atletico Tucuman Reserves vs River Plate Reserves\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":1.729999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"Atletico Tucuman Reserves\",\"away\":\"River Plate Reserves\",\"league\":\"Reserves Leagues U23\",\"date\":\"12.09.2025, 03:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 28
+Toplam Oran: 2.99
+Potansiyel Kazanç: 29.93 TL
+Seçim Sayısı: 2
+Önceki Bakiye: 760 TL
+Yeni Bakiye: 750 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_28_1757628988
+Kupon Detay ID: 25
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: Atletico Tucuman Reserves vs River Plate Reserves
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: Atletico Tucuman Reserves vs River Plate Reserves
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 1.73
+    Bahis Tipi: 
+    Event ID: 1024832498
+  Seçim 2:
+    Maç: Atletico Tucuman Reserves vs River Plate Reserves
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 1.73
+    Bahis Tipi: 
+    Event ID: 1024832498
+Timestamp: 2025-09-11 22:16:28
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 28,
+        "total_odds": "2.99",
+        "potential_win": "29.93",
+        "selections_count": 2,
+        "previous_balance": 760,
+        "new_balance": 750,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_28_1757628988",
+        "kupon_detay_id": "25",
+        "karsilasma": "Atletico Tucuman Reserves vs River Plate Reserves",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-11 22:16:28"
+    },
+    "timestamp": "2025-09-11 22:16:28"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:42:57",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97daae625d5bd385-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 750,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-11 22:42:57"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:42:57",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Content-Length": "1181",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "Host": "betedor101.com",
+        "Cf-Ray": "97daae64ac4d3617-FRA",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":29,\"total_odds\":\"32.77\",\"potential_win\":\"327.68\",\"selections\":[{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 29
+Toplam Oran: 32.77
+Potansiyel Kazanç: 327.68 TL
+Seçim Sayısı: 3
+Önceki Bakiye: 750 TL
+Yeni Bakiye: 740 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_29_1757630577
+Kupon Detay ID: 26
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 2:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 3:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1024922046
+Timestamp: 2025-09-11 22:42:57
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 29,
+        "total_odds": "32.77",
+        "potential_win": "327.68",
+        "selections_count": 3,
+        "previous_balance": 750,
+        "new_balance": 740,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_29_1757630577",
+        "kupon_detay_id": "26",
+        "karsilasma": "CA Tembetary Reserves vs Sportivo Ameliano Reserves",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-11 22:42:57"
+    },
+    "timestamp": "2025-09-11 22:42:57"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:43:02",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97daae860d218ce7-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 740,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-11 22:43:02"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:43:04",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Content-Length": "1378",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "Host": "betedor101.com",
+        "Cf-Ray": "97daae8e4ffed9d4-FRA",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":30,\"total_odds\":\"150.06\",\"potential_win\":\"1500.63\",\"selections\":[{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Evsahibi Kazan\\u0131r\",\"odds\":3.5,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Evsahibi Kazan\\u0131r\",\"odds\":3.5,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Evsahibi Kazan\\u0131r\",\"odds\":3.5,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"Kazanan\",\"selection\":\"Evsahibi Kazan\\u0131r\",\"odds\":3.5,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 30
+Toplam Oran: 150.06
+Potansiyel Kazanç: 1500.63 TL
+Seçim Sayısı: 4
+Önceki Bakiye: 740 TL
+Yeni Bakiye: 730 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_30_1757630584
+Kupon Detay ID: 27
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+Seçenek: Evsahibi Kazanır
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Evsahibi Kazanır
+    Oran: 3.5
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 2:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Evsahibi Kazanır
+    Oran: 3.5
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 3:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Evsahibi Kazanır
+    Oran: 3.5
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 4:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Kazanan
+    Seçim: Evsahibi Kazanır
+    Oran: 3.5
+    Bahis Tipi: 
+    Event ID: 1024922046
+Timestamp: 2025-09-11 22:43:04
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 30,
+        "total_odds": "150.06",
+        "potential_win": "1500.63",
+        "selections_count": 4,
+        "previous_balance": 740,
+        "new_balance": 730,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_30_1757630584",
+        "kupon_detay_id": "27",
+        "karsilasma": "CA Tembetary Reserves vs Sportivo Ameliano Reserves",
+        "secenek": "Evsahibi Kazanır",
+        "timestamp": "2025-09-11 22:43:04"
+    },
+    "timestamp": "2025-09-11 22:43:04"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:43:09",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97daaeb11b0f368b-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 730,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-11 22:43:09"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-11 22:43:10",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Content-Length": "2226",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "Host": "betedor101.com",
+        "Cf-Ray": "97daaeb5cb2d2c4d-FRA",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":31,\"total_odds\":\"3.46\",\"potential_win\":\"34.63\",\"selections\":[{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}},{\"eventId\":\"1024922046\",\"match\":\"CA Tembetary Reserves vs Sportivo Ameliano Reserves\",\"market\":\"\\u00c7ift Avantaj\",\"selection\":\"X2\",\"odds\":1.229999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"CA Tembetary Reserves\",\"away\":\"Sportivo Ameliano Reserves\",\"league\":\"Reserves League\",\"date\":\"12.09.2025, 17:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 31
+Toplam Oran: 3.46
+Potansiyel Kazanç: 34.63 TL
+Seçim Sayısı: 6
+Önceki Bakiye: 730 TL
+Yeni Bakiye: 720 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_31_1757630590
+Kupon Detay ID: 28
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+Seçenek: X2
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 2:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 3:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 4:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 5:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+  Seçim 6:
+    Maç: CA Tembetary Reserves vs Sportivo Ameliano Reserves
+    Pazar: Çift Avantaj
+    Seçim: X2
+    Oran: 1.23
+    Bahis Tipi: 
+    Event ID: 1024922046
+Timestamp: 2025-09-11 22:43:10
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 31,
+        "total_odds": "3.46",
+        "potential_win": "34.63",
+        "selections_count": 6,
+        "previous_balance": 730,
+        "new_balance": 720,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_31_1757630590",
+        "kupon_detay_id": "28",
+        "karsilasma": "CA Tembetary Reserves vs Sportivo Ameliano Reserves",
+        "secenek": "X2",
+        "timestamp": "2025-09-11 22:43:10"
+    },
+    "timestamp": "2025-09-11 22:43:10"
+}
+

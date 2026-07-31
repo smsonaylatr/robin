@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Admin - Premium Dashboard</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- ApexCharts -->
+    <link href="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.css" rel="stylesheet">
+    
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --gray-100: #f9fafb;
+            --gray-200: #f3f4f6;
+            --gray-300: #e5e7eb;
+            --gray-400: #d1d5db;
+            --gray-500: #9ca3af;
+            --gray-600: #6b7280;
+            --gray-700: #4b5563;
+            --gray-800: #374151;
+            --gray-900: #1f2937;
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --topbar-height: 70px;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            font-size: 0.875rem;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-200);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-400);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-500);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            z-index: 1040;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--gray-600);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-section-title {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-section-title {
+            opacity: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            gap: 0.75rem;
+        }
+
+        .menu-item:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .menu-item-icon {
+            font-size: 1.25rem;
+            width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item-text {
+            flex: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-item-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 0.625rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .menu-item-text,
+        .sidebar.collapsed .menu-item-badge {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        /* Topbar */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            height: var(--topbar-height);
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1030;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar.collapsed ~ .main-wrapper .topbar {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        .topbar-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-box-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topbar-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topbar-item:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .topbar-item-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background: var(--gray-100);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            padding-top: var(--topbar-height);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.collapsed ~ .main-wrapper {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .main-content {
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            background: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .breadcrumb-item {
+            font-size: 0.875rem;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "›";
+            color: var(--gray-400);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .card-header {
+            background: none;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card-body {
+            padding: 1.5rem;
+        }
+
+        .stats-card-icon {
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            color: rgba(0, 0, 0, 0.05);
+        }
+
+        .stats-card-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-card-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        /* Additional Styles */
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .quick-action-card {
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Custom Badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.375rem 0.75rem;
+        }
+
+        /* Hover Effects */
+        .table-hover tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .promo-item {
+            transition: all 0.3s ease;
+        }
+
+        .promo-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Notification Dot */
+        .notification-dot {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--white);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--card-shadow-hover);
+            transition: all 0.3s ease;
+            z-index: 1050;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-300) 50%, var(--gray-200) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Tooltips */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+        }
+
+        [data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: var(--dark);
+            margin-bottom: -5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .search-box {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .topbar {
+                left: 0;
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">
+                    <i class="fas fa-dice"></i>
+                </div>
+                <span class="sidebar-logo-text">CasinoAdmin</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <div class="menu-section-title">Ana Menü</div>
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-home menu-item-icon"></i>
+                    <span class="menu-item-text">Dashboard</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-chart-line menu-item-icon"></i>
+                    <span class="menu-item-text">Analytics</span>
+                    <span class="menu-item-badge">Pro</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-users menu-item-icon"></i>
+                    <span class="menu-item-text">Kullanıcılar</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-gamepad menu-item-icon"></i>
+                    <span class="menu-item-text">Oyunlar</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-coins menu-item-icon"></i>
+                    <span class="menu-item-text">Bahisler</span>
+                </a>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-section-title">Yönetim</div>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-wallet menu-item-icon"></i>
+                    <span class="menu-item-text">Finans</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-trophy menu-item-icon"></i>
+                    <span class="menu-item-text">Turnuvalar</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-gift menu-item-icon"></i>
+                    <span class="menu-item-text">Promosyonlar</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-headset menu-item-icon"></i>
+                    <span class="menu-item-text">Destek</span>
+                    <span class="menu-item-badge">12</span>
+                </a>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-section-title">Sistem</div>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-cog menu-item-icon"></i>
+                    <span class="menu-item-text">Ayarlar</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-shield-alt menu-item-icon"></i>
+                    <span class="menu-item-text">Güvenlik</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-server menu-item-icon"></i>
+                    <span class="menu-item-text">Sistem</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="search-box">
+                    <i class="fas fa-search search-box-icon"></i>
+                    <input type="text" placeholder="Ara...">
+                </div>
+            </div>
+            
+            <div class="topbar-right">
+                <div class="topbar-item">
+                    <i class="fas fa-expand"></i>
+                </div>
+                <div class="topbar-item">
+                    <i class="fas fa-bell"></i>
+                    <span class="topbar-item-badge"></span>
+                </div>
+                <div class="topbar-item">
+                    <i class="fas fa-envelope"></i>
+                    <span class="topbar-item-badge"></span>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">Admin User</div>
+                        <div class="user-role">Süper Admin</div>
+                    </div>
+                    <div class="user-avatar">A</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Ana Sayfa</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-users stats-card-icon"></i>
+                            <div class="stats-card-title">Toplam Kullanıcı</div>
+                            <div class="stats-card-value">45,678</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12.5% bu ay</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-coins stats-card-icon"></i>
+                            <div class="stats-card-title">Finans Limitiniz</div>
+                            <div class="stats-card-value">₺234,567</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Kullanılabilir</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-ticket-alt stats-card-icon"></i>
+                            <div class="stats-card-title">Bekleyen Kuponlar</div>
+                            <div class="stats-card-value">1,234</div>
+                            <div class="stats-card-trend trend-down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>2.1% bugün</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-wallet stats-card-icon"></i>
+                            <div class="stats-card-title">Üye Bakiyeleri</div>
+                            <div class="stats-card-value">₺8.7M</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>Toplam bakiye</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-arrow-circle-down stats-card-icon"></i>
+                            <div class="stats-card-title">Günlük Yatırım</div>
+                            <div class="stats-card-value">₺456,789</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>15.2% artış</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-arrow-circle-up stats-card-icon"></i>
+                            <div class="stats-card-title">Günlük Çekim</div>
+                            <div class="stats-card-value">₺123,456</div>
+                            <div class="stats-card-trend trend-down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>5.8% azalış</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-users-cog stats-card-icon"></i>
+                            <div class="stats-card-title">Online Üyeler</div>
+                            <div class="stats-card-value">2,847</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-circle text-success"></i>
+                                <span>Şu anda aktif</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card stats-card">
+                        <div class="stats-card-body">
+                            <i class="fas fa-dice stats-card-icon"></i>
+                            <div class="stats-card-title">Casino Limiti</div>
+                            <div class="stats-card-value">₺10M</div>
+                            <div class="stats-card-trend trend-up">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>APİ Limitiniz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Gelir Analizi</h5>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-secondary">Gün</button>
+                                <button type="button" class="btn btn-outline-secondary active">Hafta</button>
+                                <button type="button" class="btn btn-outline-secondary">Ay</button>
+                                <button type="button" class="btn btn-outline-secondary">Yıl</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="revenueChart" style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Oyun İstatistikleri</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="categoriesChart" style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables and Activity -->
+            <div class="row g-4 mb-4">
+                <!-- Recent Transactions -->
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Son İşlemler</h5>
+                            <button class="btn btn-sm btn-primary">Tümünü Gör</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Kullanıcı</th>
+                                            <th>İşlem</th>
+                                            <th>Oyun</th>
+                                            <th>Miktar</th>
+                                            <th>Durum</th>
+                                            <th>Tarih</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle me-3">
+                                                        <span class="fw-bold">AY</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Ahmet Yılmaz</div>
+                                                        <small class="text-muted">ID: #45678</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-success">Para Yatırma</span></td>
+                                            <td>Slot Madness</td>
+                                            <td class="fw-semibold">₺5,000</td>
+                                            <td><span class="badge bg-success">Tamamlandı</span></td>
+                                            <td>2 dk önce</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-warning bg-opacity-10 text-warning rounded-circle me-3">
+                                                        <span class="fw-bold">MD</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Mehmet Demir</div>
+                                                        <small class="text-muted">ID: #45679</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-warning">Bahis</span></td>
+                                            <td>Blackjack Pro</td>
+                                            <td class="fw-semibold">₺2,500</td>
+                                            <td><span class="badge bg-warning">Beklemede</span></td>
+                                            <td>5 dk önce</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-danger bg-opacity-10 text-danger rounded-circle me-3">
+                                                        <span class="fw-bold">EK</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Elif Kaya</div>
+                                                        <small class="text-muted">ID: #45680</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-danger">Para Çekme</span></td>
+                                            <td>Rulet Royal</td>
+                                            <td class="fw-semibold">₺10,000</td>
+                                            <td><span class="badge bg-info">İşleniyor</span></td>
+                                            <td>10 dk önce</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-success bg-opacity-10 text-success rounded-circle me-3">
+                                                        <span class="fw-bold">CY</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Can Yılmaz</div>
+                                                        <small class="text-muted">ID: #45681</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-success">Kazanç</span></td>
+                                            <td>Mega Jackpot</td>
+                                            <td class="fw-semibold text-success">₺25,000</td>
+                                            <td><span class="badge bg-success">Tamamlandı</span></td>
+                                            <td>15 dk önce</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-info bg-opacity-10 text-info rounded-circle me-3">
+                                                        <span class="fw-bold">SK</span>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-semibold">Selin Kara</div>
+                                                        <small class="text-muted">ID: #45682</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-info">Bonus</span></td>
+                                            <td>Hoşgeldin Bonusu</td>
+                                            <td class="fw-semibold">₺500</td>
+                                            <td><span class="badge bg-success">Tamamlandı</span></td>
+                                            <td>20 dk önce</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Activity Feed -->
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Canlı Aktiviteler</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-feed">
+                                <div class="activity-item d-flex align-items-start mb-3">
+                                    <div class="activity-icon bg-success bg-opacity-10 text-success rounded-circle p-2 me-3">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">Yeni Kullanıcı</h6>
+                                            <small class="text-muted">Şimdi</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">Fatma Öz sisteme kayıt oldu</p>
+                                    </div>
+                                </div>
+                                <div class="activity-item d-flex align-items-start mb-3">
+                                    <div class="activity-icon bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">Büyük Kazanç!</h6>
+                                            <small class="text-muted">2 dk</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">Ali Veli ₺50,000 kazandı</p>
+                                    </div>
+                                </div>
+                                <div class="activity-item d-flex align-items-start mb-3">
+                                    <div class="activity-icon bg-danger bg-opacity-10 text-danger rounded-circle p-2 me-3">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">Sistem Uyarısı</h6>
+                                            <small class="text-muted">5 dk</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">Sunucu yükü %85'e ulaştı</p>
+                                    </div>
+                                </div>
+                                <div class="activity-item d-flex align-items-start mb-3">
+                                    <div class="activity-icon bg-info bg-opacity-10 text-info rounded-circle p-2 me-3">
+                                        <i class="fas fa-gamepad"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">Yeni Oyun</h6>
+                                            <small class="text-muted">10 dk</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">Lucky Stars oyunu eklendi</p>
+                                    </div>
+                                </div>
+                                <div class="activity-item d-flex align-items-start">
+                                    <div class="activity-icon bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-1">Promosyon</h6>
+                                            <small class="text-muted">15 dk</small>
+                                        </div>
+                                        <p class="mb-0 text-muted small">%50 Hoşgeldin Bonusu aktif</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Hızlı İşlemler</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <div class="quick-action-card text-center p-4 rounded-3 bg-primary bg-opacity-10 cursor-pointer h-100">
+                                        <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                                        <h6 class="mb-1">Yeni Kullanıcı</h6>
+                                        <small class="text-muted">Kullanıcı ekle</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="quick-action-card text-center p-4 rounded-3 bg-success bg-opacity-10 cursor-pointer h-100">
+                                        <i class="fas fa-gamepad fa-3x text-success mb-3"></i>
+                                        <h6 class="mb-1">Oyun Ekle</h6>
+                                        <small class="text-muted">Yeni oyun tanımla</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="quick-action-card text-center p-4 rounded-3 bg-warning bg-opacity-10 cursor-pointer h-100">
+                                        <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                                        <h6 class="mb-1">Turnuva Oluştur</h6>
+                                        <small class="text-muted">Yeni turnuva başlat</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="quick-action-card text-center p-4 rounded-3 bg-danger bg-opacity-10 cursor-pointer h-100">
+                                        <i class="fas fa-file-invoice fa-3x text-danger mb-3"></i>
+                                        <h6 class="mb-1">Rapor Oluştur</h6>
+                                        <small class="text-muted">Detaylı rapor al</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="row g-4">
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Sistem Performansı</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>CPU Kullanımı</span>
+                                    <span class="fw-semibold">65%</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>RAM Kullanımı</span>
+                                    <span class="fw-semibold">78%</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-warning" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Disk Alanı</span>
+                                    <span class="fw-semibold">45%</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Aktif Bağlantılar</span>
+                                    <span class="fw-semibold">1,234</span>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-info" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">En Popüler Oyunlar</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="popular-games">
+                                <div class="game-item d-flex align-items-center mb-3">
+                                    <div class="game-icon bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                                        <i class="fas fa-dice text-primary fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Mega Slot</h6>
+                                        <small class="text-muted">1,234 oyuncu</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-semibold">₺45,678</div>
+                                        <small class="text-success">+12%</small>
+                                    </div>
+                                </div>
+                                <div class="game-item d-flex align-items-center mb-3">
+                                    <div class="game-icon bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                                        <i class="fas fa-spade text-success fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Blackjack Pro</h6>
+                                        <small class="text-muted">987 oyuncu</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-semibold">₺32,150</div>
+                                        <small class="text-success">+8%</small>
+                                    </div>
+                                </div>
+                                <div class="game-item d-flex align-items-center mb-3">
+                                    <div class="game-icon bg-warning bg-opacity-10 rounded-3 p-3 me-3">
+                                        <i class="fas fa-crown text-warning fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Royal Poker</h6>
+                                        <small class="text-muted">756 oyuncu</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-semibold">₺28,900</div>
+                                        <small class="text-danger">-3%</small>
+                                    </div>
+                                </div>
+                                <div class="game-item d-flex align-items-center">
+                                    <div class="game-icon bg-danger bg-opacity-10 rounded-3 p-3 me-3">
+                                        <i class="fas fa-dice-d20 text-danger fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">Lucky Roulette</h6>
+                                        <small class="text-muted">543 oyuncu</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-semibold">₺21,340</div>
+                                        <small class="text-success">+5%</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Aktif Promosyonlar</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="promotions-list">
+                                <div class="promo-item mb-3 p-3 border rounded-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-1">Hoşgeldin Bonusu</h6>
+                                        <span class="badge bg-success">Aktif</span>
+                                    </div>
+                                    <p class="mb-2 text-muted small">%100 bonus + 50 free spin</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">234 kullanım</small>
+                                        <small class="text-primary">3 gün kaldı</small>
+                                    </div>
+                                </div>
+                                <div class="promo-item mb-3 p-3 border rounded-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-1">Hafta Sonu Bonusu</h6>
+                                        <span class="badge bg-warning">Yakında</span>
+                                    </div>
+                                    <p class="mb-2 text-muted small">%50 reload bonus</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">0 kullanım</small>
+                                        <small class="text-primary">2 gün sonra</small>
+                                    </div>
+                                </div>
+                                <div class="promo-item p-3 border rounded-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="mb-1">VIP Cashback</h6>
+                                        <span class="badge bg-info">VIP Only</span>
+                                    </div>
+                                    <p class="mb-2 text-muted small">%15 haftalık cashback</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">45 kullanım</small>
+                                        <small class="text-primary">Sürekli</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More content will be added here -->
+        </main>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" id="themeToggle" data-tooltip="Tema Değiştir">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            initEventListeners();
+            initLiveData();
+            initNotifications();
+        });
+
+        // Sidebar Toggle
+        function initEventListeners() {
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('collapsed');
+            });
+
+            // Quick Actions
+            document.querySelectorAll('.quick-action-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h6').textContent;
+                    Swal.fire({
+                        title: title,
+                        text: 'Bu özellik yakında eklenecek!',
+                        icon: 'info',
+                        confirmButtonColor: '#6366f1'
+                    });
+                });
+            });
+
+            // Theme Toggle
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            });
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Revenue Chart
+            var revenueOptions = {
+                series: [{
+                    name: 'Gelir',
+                    data: [31, 40, 28, 51, 42, 109, 100]
+                }, {
+                    name: 'Gider',
+                    data: [11, 32, 45, 32, 34, 52, 41]
+                }],
+                chart: {
+                    height: 350,
+                    type: 'area',
+                    toolbar: {
+                        show: false
+                    },
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800
+                    }
+                },
+                colors: ['#6366f1', '#ef4444'],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        opacityFrom: 0.6,
+                        opacityTo: 0.1,
+                    }
+                },
+                xaxis: {
+                    categories: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz']
+                },
+                tooltip: {
+                    theme: 'light',
+                    y: {
+                        formatter: function(val) {
+                            return "₺" + val.toLocaleString('tr-TR');
+                        }
+                    }
+                }
+            };
+
+            var revenueChart = new ApexCharts(document.querySelector("#revenueChart"), revenueOptions);
+            revenueChart.render();
+
+            // Categories Chart
+            var categoriesOptions = {
+                series: [35, 45, 20],
+                chart: {
+                    height: 350,
+                    type: 'donut',
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800,
+                        animateGradually: {
+                            enabled: true,
+                            delay: 150
+                        },
+                        dynamicAnimation: {
+                            enabled: true,
+                            speed: 350
+                        }
+                    }
+                },
+                labels: ['Spor Bahisleri', 'Casino', 'Canlı Casino'],
+                colors: ['#6366f1', '#10b981', '#f59e0b'],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '70%',
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: 'Toplam',
+                                    formatter: function(w) {
+                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+
+            var categoriesChart = new ApexCharts(document.querySelector("#categoriesChart"), categoriesOptions);
+            categoriesChart.render();
+        }
+
+        // Live Data Simulation
+        function initLiveData() {
+            // Update stats every 5 seconds
+            setInterval(() => {
+                updateStats();
+            }, 5000);
+
+            // Add new activity every 10 seconds
+            setInterval(() => {
+                addNewActivity();
+            }, 10000);
+
+            // Update progress bars
+            setInterval(() => {
+                updateProgressBars();
+            }, 3000);
+        }
+
+        function updateStats() {
+            const stats = document.querySelectorAll('.stats-card-value');
+            stats.forEach(stat => {
+                const currentValue = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
+                const change = Math.floor(Math.random() * 1000) - 500;
+                const newValue = Math.max(0, currentValue + change);
+                
+                if (stat.textContent.includes('₺')) {
+                    stat.textContent = '₺' + newValue.toLocaleString('tr-TR');
+                } else if (stat.textContent.includes('%')) {
+                    stat.textContent = (Math.random() * 30 + 10).toFixed(1) + '%';
+                } else {
+                    stat.textContent = newValue.toLocaleString('tr-TR');
+                }
+            });
+        }
+
+        function addNewActivity() {
+            const activities = [
+                { icon: 'fa-user-plus', color: 'success', title: 'Yeni Kullanıcı', desc: 'Yeni bir kullanıcı kayıt oldu' },
+                { icon: 'fa-trophy', color: 'warning', title: 'Büyük Kazanç!', desc: 'Bir oyuncu büyük ödül kazandı' },
+                { icon: 'fa-gamepad', color: 'info', title: 'Oyun Güncelleme', desc: 'Yeni oyun özellikleri eklendi' },
+                { icon: 'fa-coins', color: 'primary', title: 'Para Yatırma', desc: 'Büyük miktarda para yatırıldı' }
+            ];
+
+            const activity = activities[Math.floor(Math.random() * activities.length)];
+            const activityFeed = document.querySelector('.activity-feed');
+            const firstItem = activityFeed.querySelector('.activity-item');
+
+            const newActivity = document.createElement('div');
+            newActivity.className = 'activity-item d-flex align-items-start mb-3';
+            newActivity.innerHTML = `
+                <div class="activity-icon bg-${activity.color} bg-opacity-10 text-${activity.color} rounded-circle p-2 me-3">
+                    <i class="fas ${activity.icon}"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-1">${activity.title}</h6>
+                        <small class="text-muted">Şimdi</small>
+                    </div>
+                    <p class="mb-0 text-muted small">${activity.desc}</p>
+                </div>
+            `;
+
+            activityFeed.insertBefore(newActivity, firstItem);
+            
+            // Remove last item if too many
+            const items = activityFeed.querySelectorAll('.activity-item');
+            if (items.length > 5) {
+                items[items.length - 1].remove();
+            }
+        }
+
+        function updateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width);
+                const change = Math.floor(Math.random() * 10) - 5;
+                const newWidth = Math.max(10, Math.min(95, currentWidth + change));
+                bar.style.width = newWidth + '%';
+                
+                // Update the percentage text
+                const percentText = bar.closest('.mb-4, div').querySelector('.fw-semibold');
+                if (percentText && percentText.textContent.includes('%')) {
+                    percentText.textContent = newWidth + '%';
+                }
+            });
+        }
+
+        // Notifications
+        function initNotifications() {
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification('Hoş Geldiniz!', 'Casino Admin Panel\'e hoş geldiniz.', 'success');
+            }, 1000);
+
+            // Simulate random notifications
+            setInterval(() => {
+                const notifications = [
+                    { title: 'Yeni Kayıt', message: 'Yeni bir kullanıcı sisteme kayıt oldu.', type: 'info' },
+                    { title: 'Büyük Kazanç', message: 'Bir oyuncu jackpot kazandı!', type: 'success' },
+                    { title: 'Sistem Uyarısı', message: 'Sunucu yükü yüksek.', type: 'warning' }
+                ];
+
+                const notif = notifications[Math.floor(Math.random() * notifications.length)];
+                showNotification(notif.title, notif.message, notif.type);
+            }, 30000);
+        }
+
+        function showNotification(title, message, type = 'info') {
+            const toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            toast.fire({
+                icon: type,
+                title: title,
+                text: message
+            });
+        }
+
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                if (searchTerm) {
+                    showNotification('Arama', `"${searchTerm}" için arama yapılıyor...`, 'info');
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

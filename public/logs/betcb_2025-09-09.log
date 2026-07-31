@@ -1,0 +1,993 @@
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 09:49:09",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "TR",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c5c6243e4afba9-AMS",
+        "X-Forwarded-For": "85.110.212.236",
+        "Priority": "u=0, i",
+        "Accept-Language": "tr,en-US;q=0.9,en;q=0.8,de-AT;q=0.7,de;q=0.6,uk;q=0.5",
+        "Accept-Encoding": "gzip, br",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-User": "?1",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Accept": "text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/avif,image\/webp,image\/apng,*\/*;q=0.8,application\/signed-exchange;v=b3;q=0.7",
+        "User-Agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/139.0.0.0 Safari\/537.36",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Ch-Ua-Platform": "\"Windows\"",
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "Cookie": "XSRF-TOKEN=eyJpdiI6IjZZR1ZsaTRMSVdLL0V5TTdpTHVVSGc9PSIsInZhbHVlIjoiYWZoa3pRU3BTS2JpVnRQd2Y4cDFJSEVkTSsxTnRiY3oxWTVZV1VaL0JUSUxEN0JMcWhEOTVrODBuWWNIZUxiNWdPdTBGa0U2QTRKTmRieU13NVRlaHU3UjZDM1ZLUVFRcStiT1R0M0YydzRvMWFVY2psMFJ1ZEF3Zzdab2Q5MnYiLCJtYWMiOiIwOTdhZWVmZDQ3NzQ3YmY0ZWIxNDk2MjA2YjhlYTlhOGRkNjkwYjc3MGNiMWVjZDk3NTJmOWNjMDhmNjcyMjJkIiwidGFnIjoiIn0%3D; lucybet_1_numarali_casino_sitesi_session=eyJpdiI6IlVxSUROaXZTY00vSjJDTFJIREk2REE9PSIsInZhbHVlIjoiUnc3SUJhb2hRRVhUeUpQSXA1bGp2NitHZ1o4NUd6V00yUG9JRGw5M3VRWmZRMlRDd3FrQ29DMzhLTTJYMzFIejlwZTFhVFZHQm1NUENLdHVvL1ZHVlZOdElvUGpuY1p5Mk1WdXlmNWozVDVybDhaZlNhTmFabUJRUHFXQWNPbDAiLCJtYWMiOiJjYjEyM2VmZWI0ZGQ0M2M3NTdmNjdjNzAyM2FhZjU0NDkwZjIzZGUxYmU4NTE4YjNjOGE2NzliZjA0MTQyM2E5IiwidGFnIjoiIn0%3D"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/139.0.0.0 Safari\/537.36",
+    "ip_address": "85.110.212.236",
+    "request_uri": "\/betcb.php"
+}
+
+=== RESPONSE ===
+{
+    "success": false,
+    "error": "Sadece POST istekleri kabul edilir",
+    "timestamp": "2025-09-09 09:49:09"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 09:49:47",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c5c713b98d4d7c-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 0,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 09:49:47"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 09:50:02",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c5c76f2c8522b4-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 1000,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 09:50:02"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 09:50:02",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c5c771db98dec7-CDG",
+        "Content-Length": "453"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":5,\"total_odds\":\"5.30\",\"potential_win\":\"53.00\",\"selections\":[{\"eventId\":\"1024853144\",\"match\":\"Italy U19 vs Czech Republic U19\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":5.29999999999999982236431605997495353221893310546875,\"bet_type\":\"\",\"match_info\":{\"home\":\"Italy U19\",\"away\":\"Czech Republic U19\",\"league\":\"Under 19\",\"date\":\"09.09.2025, 14:44\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 5
+Toplam Oran: 5.30
+Potansiyel Kazanç: 53.00 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 1000 TL
+Yeni Bakiye: 990 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_5_1757411402
+Kupon Detay ID: 5
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: Italy U19 vs Czech Republic U19
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: Italy U19 vs Czech Republic U19
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 5.3
+    Bahis Tipi: 
+    Event ID: 1024853144
+Timestamp: 2025-09-09 09:50:02
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 5,
+        "total_odds": "5.30",
+        "potential_win": "53.00",
+        "selections_count": 1,
+        "previous_balance": 1000,
+        "new_balance": 990,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_5_1757411402",
+        "kupon_detay_id": "5",
+        "karsilasma": "Italy U19 vs Czech Republic U19",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-09 09:50:02"
+    },
+    "timestamp": "2025-09-09 09:50:02"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 15:50:24",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c7d750a845d0ba-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 990,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 15:50:24"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 15:50:24",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c7d7522f4c18dd-FRA",
+        "Content-Length": "444"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":6,\"total_odds\":\"1.14\",\"potential_win\":\"11.40\",\"selections\":[{\"eventId\":\"1020617325\",\"match\":\"\",\"market\":\"Both Teams To Score - 2nd Half\",\"selection\":\"No\",\"odds\":1.1399999999999999023003738329862244427204132080078125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Togo\",\"away\":\"Sudan\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"09.09.2025, 22:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 6
+Toplam Oran: 1.14
+Potansiyel Kazanç: 11.40 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 990 TL
+Yeni Bakiye: 980 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_6_1757433024
+Kupon Detay ID: 6
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: No
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Both Teams To Score - 2nd Half
+    Seçim: No
+    Oran: 1.14
+    Bahis Tipi: 
+    Event ID: 1020617325
+Timestamp: 2025-09-09 15:50:24
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 6,
+        "total_odds": "1.14",
+        "potential_win": "11.40",
+        "selections_count": 1,
+        "previous_balance": 990,
+        "new_balance": 980,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_6_1757433024",
+        "kupon_detay_id": "6",
+        "karsilasma": "",
+        "secenek": "No",
+        "timestamp": "2025-09-09 15:50:24"
+    },
+    "timestamp": "2025-09-09 15:50:24"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 15:50:43",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c7d7cc4af5dbbb-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 980,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 15:50:43"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 15:50:44",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c7d7ce2c4d0692-CDG",
+        "Content-Length": "457"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":7,\"total_odds\":\"1.14\",\"potential_win\":\"11.40\",\"selections\":[{\"eventId\":\"1020617325\",\"match\":\"Togo vs Sudan\",\"market\":\"Both Teams To Score - 2nd Half\",\"selection\":\"No\",\"odds\":1.1399999999999999023003738329862244427204132080078125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Togo\",\"away\":\"Sudan\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"09.09.2025, 22:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 7
+Toplam Oran: 1.14
+Potansiyel Kazanç: 11.40 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 980 TL
+Yeni Bakiye: 970 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_7_1757433044
+Kupon Detay ID: 7
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: Togo vs Sudan
+Seçenek: No
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: Togo vs Sudan
+    Pazar: Both Teams To Score - 2nd Half
+    Seçim: No
+    Oran: 1.14
+    Bahis Tipi: 
+    Event ID: 1020617325
+Timestamp: 2025-09-09 15:50:44
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 7,
+        "total_odds": "1.14",
+        "potential_win": "11.40",
+        "selections_count": 1,
+        "previous_balance": 980,
+        "new_balance": 970,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_7_1757433044",
+        "kupon_detay_id": "7",
+        "karsilasma": "Togo vs Sudan",
+        "secenek": "No",
+        "timestamp": "2025-09-09 15:50:44"
+    },
+    "timestamp": "2025-09-09 15:50:44"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 16:03:08",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c7e9f74f64d38d-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 970,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 16:03:08"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 16:03:08",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c7e9f95a8a0858-FRA",
+        "Content-Length": "428"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":8,\"total_odds\":\"2.33\",\"potential_win\":\"23.30\",\"selections\":[{\"eventId\":\"1020617325\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Togo\",\"odds\":2.3300000000000000710542735760100185871124267578125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Togo\",\"away\":\"Sudan\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"09.09.2025, 22:00\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 8
+Toplam Oran: 2.33
+Potansiyel Kazanç: 23.30 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 970 TL
+Yeni Bakiye: 960 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_8_1757433788
+Kupon Detay ID: 8
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: Togo
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Togo
+    Oran: 2.33
+    Bahis Tipi: 
+    Event ID: 1020617325
+Timestamp: 2025-09-09 16:03:08
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 8,
+        "total_odds": "2.33",
+        "potential_win": "23.30",
+        "selections_count": 1,
+        "previous_balance": 970,
+        "new_balance": 960,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_8_1757433788",
+        "kupon_detay_id": "8",
+        "karsilasma": "",
+        "secenek": "Togo",
+        "timestamp": "2025-09-09 16:03:08"
+    },
+    "timestamp": "2025-09-09 16:03:08"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 21:28:01",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c9c5e3cb2d9ea6-CDG",
+        "Content-Type": "application\/json",
+        "User-Agent": "KuponSystem\/1.0",
+        "X-Forwarded-For": "167.86.77.78",
+        "Accept": "*\/*",
+        "Content-Length": "180"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"kupon_id\":8,\"user_id\":\"2\",\"username\":\"testdeneme\",\"agent_code\":\"Betedor\",\"win_amount\":\"23.30\",\"bet_amount\":\"10.00\",\"odds\":\"2.33\",\"status\":\"won\",\"timestamp\":\"2025-09-09 21:28:01\"}",
+    "user_agent": "KuponSystem\/1.0",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== ERROR ===
+Error: Gerekli alan eksik: coupon_amount
+Timestamp: 2025-09-09 21:28:02
+Kupon Detayları Kaydedildi: BAŞARISIZ (Hata nedeniyle)
+
+=== FINAL RESPONSE ===
+{
+    "success": false,
+    "error": "Gerekli alan eksik: coupon_amount",
+    "timestamp": "2025-09-09 21:28:02"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 21:48:36",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Connection": "Keep-Alive",
+        "Host": "betedor101.com",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c9e4083f2c22aa-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "X-Forwarded-For": "167.86.77.78"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 960,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 21:48:36"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 21:48:37",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c9e40d39a6d2a4-FRA",
+        "Content-Length": "978"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":12,\"total_odds\":\"25.60\",\"potential_win\":\"256.00\",\"selections\":[{\"eventId\":\"1020244976\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"South America WC Qualifier 2026\",\"away\":null,\"league\":\"World Cup Qualifying - South America\",\"date\":\"10.09.2025, 05:30\"}},{\"eventId\":\"1020617335\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Mauritania\",\"away\":\"South Sudan\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"10.09.2025, 01:00\"}},{\"eventId\":\"1020617417\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Gabon\",\"odds\":2.5,\"bet_type\":\"\",\"match_info\":{\"home\":\"Gabon\",\"away\":\"Ivory Coast\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"10.09.2025, 01:01\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 12
+Toplam Oran: 25.60
+Potansiyel Kazanç: 256.00 TL
+Seçim Sayısı: 3
+Önceki Bakiye: 960 TL
+Yeni Bakiye: 950 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_12_1757454517
+Kupon Detay ID: 9
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1020244976
+  Seçim 2:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1020617335
+  Seçim 3:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Gabon
+    Oran: 2.5
+    Bahis Tipi: 
+    Event ID: 1020617417
+Timestamp: 2025-09-09 21:48:37
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 12,
+        "total_odds": "25.60",
+        "potential_win": "256.00",
+        "selections_count": 3,
+        "previous_balance": 960,
+        "new_balance": 950,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_12_1757454517",
+        "kupon_detay_id": "9",
+        "karsilasma": "",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-09 21:48:37"
+    },
+    "timestamp": "2025-09-09 21:48:37"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 21:50:26",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97c9e6b439957021-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 950,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 21:50:26"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 21:50:26",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97c9e6b69e967093-FRA",
+        "Content-Length": "1014"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":13,\"total_odds\":\"31.04\",\"potential_win\":\"310.40\",\"selections\":[{\"eventId\":\"1020617335\",\"match\":\"\",\"market\":\"Ma\\u00e7 Sonucu\",\"selection\":\"Berabere\",\"odds\":3.20000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Mauritania\",\"away\":\"South Sudan\",\"league\":\"World Cup Qualifying - Africa\",\"date\":\"10.09.2025, 01:00\"}},{\"eventId\":\"1020244976\",\"match\":\"\",\"market\":\"Season Finishing Position\",\"selection\":\"Bolivia\",\"odds\":5,\"bet_type\":\"\",\"match_info\":{\"home\":\"South America WC Qualifier 2026\",\"away\":null,\"league\":\"World Cup Qualifying - South America\",\"date\":\"10.09.2025, 05:30\"}},{\"eventId\":\"1022037560\",\"match\":\"\",\"market\":\"Toplam \\u00c7\\u0131k\\u0131\\u015f 8.5\",\"selection\":\"Over (+8.5)\",\"odds\":1.939999999999999946709294817992486059665679931640625,\"bet_type\":\"\",\"match_info\":{\"home\":\"New York Yankees\",\"away\":\"Detroit Tigers\",\"league\":\"Ana Beysbol Ligi\",\"date\":\"10.09.2025, 05:05\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 13
+Toplam Oran: 31.04
+Potansiyel Kazanç: 310.40 TL
+Seçim Sayısı: 3
+Önceki Bakiye: 950 TL
+Yeni Bakiye: 940 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_13_1757454626
+Kupon Detay ID: 10
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Maç Sonucu
+    Seçim: Berabere
+    Oran: 3.2
+    Bahis Tipi: 
+    Event ID: 1020617335
+  Seçim 2:
+    Maç: 
+    Pazar: Season Finishing Position
+    Seçim: Bolivia
+    Oran: 5
+    Bahis Tipi: 
+    Event ID: 1020244976
+  Seçim 3:
+    Maç: 
+    Pazar: Toplam Çıkış 8.5
+    Seçim: Over (+8.5)
+    Oran: 1.94
+    Bahis Tipi: 
+    Event ID: 1022037560
+Timestamp: 2025-09-09 21:50:26
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 13,
+        "total_odds": "31.04",
+        "potential_win": "310.40",
+        "selections_count": 3,
+        "previous_balance": 950,
+        "new_balance": 940,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_13_1757454626",
+        "kupon_detay_id": "10",
+        "karsilasma": "",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-09 21:50:26"
+    },
+    "timestamp": "2025-09-09 21:50:26"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 23:43:16",
+    "method": "GET",
+    "headers": {
+        "X-Https": "1",
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip, br",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97ca8c012c5b0cd3-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "2",
+        "username": "testdeneme"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=2&username=testdeneme"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "balance": 940,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-09 23:43:16"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-09 23:43:16",
+    "method": "POST",
+    "headers": {
+        "X-Https": "1",
+        "Accept-Encoding": "gzip, br",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "https",
+        "Cf-Visitor": "{\"scheme\":\"https\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "97ca8c027dab4da2-FRA",
+        "Content-Length": "452"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":2,\"username\":\"testdeneme\",\"coupon_amount\":\"10.00\",\"api_agent_code\":\"Betedor\",\"coupon_id\":14,\"total_odds\":\"2.70\",\"potential_win\":\"27.00\",\"selections\":[{\"eventId\":\"1024296375\",\"match\":\"Peru vs Paraguay\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":2.70000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Peru\",\"away\":\"Paraguay\",\"league\":\"World Cup Qualifying - South America\",\"date\":\"10.09.2025, 05:30\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 2
+Kullanıcı Adı: testdeneme
+Kupon Miktarı: 10 TL
+API Agent Kodu: Betedor
+Kupon ID: 14
+Toplam Oran: 2.70
+Potansiyel Kazanç: 27.00 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 940 TL
+Yeni Bakiye: 930 TL
+Düşürülen Miktar: 10 TL
+İşlem ID: TXN_14_1757461396
+Kupon Detay ID: 11
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: Peru vs Paraguay
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: Peru vs Paraguay
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 2.7
+    Bahis Tipi: 
+    Event ID: 1024296375
+Timestamp: 2025-09-09 23:43:16
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 2,
+        "username": "testdeneme",
+        "coupon_amount": 10,
+        "api_agent_code": "Betedor",
+        "coupon_id": 14,
+        "total_odds": "2.70",
+        "potential_win": "27.00",
+        "selections_count": 1,
+        "previous_balance": 940,
+        "new_balance": 930,
+        "deducted_amount": 10,
+        "transaction_id": "TXN_14_1757461396",
+        "kupon_detay_id": "11",
+        "karsilasma": "Peru vs Paraguay",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-09 23:43:16"
+    },
+    "timestamp": "2025-09-09 23:43:16"
+}
+

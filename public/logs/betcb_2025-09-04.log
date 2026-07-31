@@ -1,0 +1,396 @@
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:07:28",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979af6a678d80686-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 5.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 05:07:28"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:07:33",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979af6c82f1cdbcb-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 5.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 05:07:33"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:07:33",
+    "method": "POST",
+    "headers": {
+        "Accept-Encoding": "gzip",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "979af6c8bfebdba7-FRA",
+        "Content-Length": "476"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":1,\"username\":\"ekremabiiyayin\",\"coupon_amount\":\"1.00\",\"api_agent_code\":\"TEST001\",\"coupon_id\":71,\"total_odds\":\"3.95\",\"potential_win\":\"3.95\",\"selections\":[{\"eventId\":\"1024204554\",\"match\":\"Mlad\\u00e1 Boleslav B vs Slovan Liberec B\",\"market\":\"Kazanan\",\"selection\":\"Berabere\",\"odds\":3.95000000000000017763568394002504646778106689453125,\"bet_type\":\"\",\"match_info\":{\"home\":\"Mlad\\u00e1 Boleslav B\",\"away\":\"Slovan Liberec B\",\"league\":\"\\u010cFL\",\"date\":\"04.09.2025, 14:30\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 1
+Kullanıcı Adı: ekremabiiyayin
+Kupon Miktarı: 1 TL
+API Agent Kodu: TEST001
+Kupon ID: 71
+Toplam Oran: 3.95
+Potansiyel Kazanç: 3.95 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 5.2 TL
+Yeni Bakiye: 4.2 TL
+Düşürülen Miktar: 1 TL
+İşlem ID: TXN_71_1756962453
+Kupon Detay ID: 3
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: Mladá Boleslav B vs Slovan Liberec B
+Seçenek: Kazanan Berabere
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: Mladá Boleslav B vs Slovan Liberec B
+    Pazar: Kazanan
+    Seçim: Berabere
+    Oran: 3.95
+    Bahis Tipi: 
+    Event ID: 1024204554
+Timestamp: 2025-09-04 05:07:33
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "coupon_amount": 1,
+        "api_agent_code": "TEST001",
+        "coupon_id": 71,
+        "total_odds": "3.95",
+        "potential_win": "3.95",
+        "selections_count": 1,
+        "previous_balance": 5.20000000000000017763568394002504646778106689453125,
+        "new_balance": 4.20000000000000017763568394002504646778106689453125,
+        "deducted_amount": 1,
+        "transaction_id": "TXN_71_1756962453",
+        "kupon_detay_id": "3",
+        "karsilasma": "Mladá Boleslav B vs Slovan Liberec B",
+        "secenek": "Kazanan Berabere",
+        "timestamp": "2025-09-04 05:07:33"
+    },
+    "timestamp": "2025-09-04 05:07:33"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:08:06",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979af792c9191f99-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 4.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 05:08:06"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:08:11",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979af7b41f9ed15d-CDG",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 4.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 05:08:11"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:08:14",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "167.86.77.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979af7c4baa38ec7-FRA",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 4.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 05:08:14"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 05:08:14",
+    "method": "POST",
+    "headers": {
+        "Accept-Encoding": "gzip",
+        "Host": "betedor101.com",
+        "Connection": "Keep-Alive",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "DE",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "User-Agent": "GuzzleHttp\/7",
+        "Content-Type": "application\/json",
+        "X-Forwarded-For": "167.86.77.78",
+        "Cf-Ray": "979af7c52ad42a7c-CDG",
+        "Content-Length": "505"
+    },
+    "get_params": [],
+    "post_params": [],
+    "raw_input": "{\"user_id\":1,\"username\":\"ekremabiiyayin\",\"coupon_amount\":\"1.00\",\"api_agent_code\":\"TEST001\",\"coupon_id\":72,\"total_odds\":\"1.34\",\"potential_win\":\"1.34\",\"selections\":[{\"eventId\":\"live_1024856775_Game Handicap_Game_Handicap_2_5_Ev_Sahibi\",\"match\":\"\",\"market\":\"Game Handicap\",\"selection\":\"2.5 Ev Sahibi\",\"odds\":1.3400000000000000799360577730112709105014801025390625,\"bet_type\":\"\",\"match_info\":{\"home\":\"Varvara Lepchenko\",\"away\":\"Alexandra Eala\",\"league\":\"Guadalajara\",\"date\":\"03.09.2025 23:23\",\"time\":\"300'\"}}]}",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "167.86.77.78",
+    "request_uri": "\/betcb.php"
+}
+
+=== KUPON OYNANDI - BAKİYE DÜŞÜRÜLDİ ===
+Kullanıcı ID: 1
+Kullanıcı Adı: ekremabiiyayin
+Kupon Miktarı: 1 TL
+API Agent Kodu: TEST001
+Kupon ID: 72
+Toplam Oran: 1.34
+Potansiyel Kazanç: 1.34 TL
+Seçim Sayısı: 1
+Önceki Bakiye: 4.2 TL
+Yeni Bakiye: 3.2 TL
+Düşürülen Miktar: 1 TL
+İşlem ID: TXN_72_1756962494
+Kupon Detay ID: 4
+Kupon Detayları Kaydedildi: BAŞARILI
+Karşılaşma: 
+Seçenek: 2.5 Ev Sahibi
+KUPON DETAYLARI:
+  Seçim 1:
+    Maç: 
+    Pazar: Game Handicap
+    Seçim: 2.5 Ev Sahibi
+    Oran: 1.34
+    Bahis Tipi: 
+    Event ID: live_1024856775_Game Handicap_Game_Handicap_2_5_Ev_Sahibi
+Timestamp: 2025-09-04 05:08:14
+
+=== FINAL RESPONSE ===
+{
+    "success": true,
+    "message": "Kupon onaylandı ve bakiye güncellendi",
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "coupon_amount": 1,
+        "api_agent_code": "TEST001",
+        "coupon_id": 72,
+        "total_odds": "1.34",
+        "potential_win": "1.34",
+        "selections_count": 1,
+        "previous_balance": 4.20000000000000017763568394002504646778106689453125,
+        "new_balance": 3.20000000000000017763568394002504646778106689453125,
+        "deducted_amount": 1,
+        "transaction_id": "TXN_72_1756962494",
+        "kupon_detay_id": "4",
+        "karsilasma": "",
+        "secenek": "2.5 Ev Sahibi",
+        "timestamp": "2025-09-04 05:08:14"
+    },
+    "timestamp": "2025-09-04 05:08:14"
+}
+
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-04 16:37:21",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "88.232.253.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "TR",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "979ee9393dc8f5f3-AMS",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "1",
+        "username": "ekremabiiyayin"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "88.232.253.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=1&username=ekremabiiyayin"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": true,
+    "data": {
+        "user_id": 1,
+        "username": "ekremabiiyayin",
+        "balance": 3.20000000000000017763568394002504646778106689453125,
+        "currency": "TRY"
+    },
+    "timestamp": "2025-09-04 16:37:21"
+}
+

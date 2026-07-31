@@ -1,0 +1,35 @@
+=== NEW REQUEST ===
+{
+    "timestamp": "2025-09-06 00:53:18",
+    "method": "GET",
+    "headers": {
+        "Host": "betedor101.com",
+        "Accept-Encoding": "gzip",
+        "X-Forwarded-For": "88.232.253.78",
+        "X-Forwarded-Proto": "http",
+        "Cf-Visitor": "{\"scheme\":\"http\"}",
+        "Cf-Ipcountry": "TR",
+        "Cdn-Loop": "cloudflare; loops=1",
+        "Cf-Ray": "97a9fd17ec25a008-AMS",
+        "User-Agent": "GuzzleHttp\/7",
+        "Connection": "Keep-Alive"
+    },
+    "get_params": {
+        "action": "check_balance",
+        "user_id": "12345",
+        "username": "betsapitech"
+    },
+    "post_params": [],
+    "raw_input": "",
+    "user_agent": "GuzzleHttp\/7",
+    "ip_address": "88.232.253.78",
+    "request_uri": "\/betcb.php?action=check_balance&user_id=12345&username=betsapitech"
+}
+
+=== BALANCE CHECK RESPONSE ===
+{
+    "success": false,
+    "error": "Kullanıcı bulunamadı: betsapitech",
+    "timestamp": "2025-09-06 00:53:18"
+}
+

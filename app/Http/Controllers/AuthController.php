@@ -1,0 +1,467 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Admin;
+use App\Models\Yonetici;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as MailException;
+
+class AuthController extends Controller
+{
+    public function showLogin()
+    {
+        $settings = \App\Models\Ayarlar::getSettings();
+        return view('auth.login', compact('settings'));
+    }
+
+    public function showRegister(Request $request)
+    {
+        $settings = \App\Models\Ayarlar::getSettings();
+        
+        // Referans ID'sini al ve session'a kaydet
+        $refId = $request->get('ref');
+        if ($refId) {
+            $referrer = \App\Models\Admin::where('id', $refId)->where('aff', 1)->first();
+            if ($referrer) {
+                session(['referral_id' => $refId]);
+            }
+        }
+        
+        return view('auth.register', compact('settings'));
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        try {
+            \Log::info('Login attempt for: ' . $request->username);
+            
+            // Önce yonetici tablosunda kontrol et (admin paneline giriş)
+            $yonetici = Yonetici::where('kullanici_adi', $request->username)->first();
+            
+            \Log::info('Yonetici found: ' . ($yonetici ? 'Yes' : 'No'));
+            
+            if ($yonetici) {
+                \Log::info('Yonetici password check: ' . (md5($request->password) === $yonetici->sifre ? 'Match' : 'No match'));
+                
+                if (md5($request->password) === $yonetici->sifre) {
+                    Auth::guard('yonetici')->login($yonetici);
+                    \Log::info('Yonetici login successful - redirecting to admin panel');
+                    return redirect()->route('admin.dashboard');
+                }
+            }
+
+            // Yonetici değilse admin tablosunda kontrol et (normal site girişi)
+            $admin = Admin::where('username', $request->username)
+                ->orWhere('email', $request->username)
+                ->first();
+            
+            \Log::info('Admin found: ' . ($admin ? 'Yes' : 'No'));
+            
+            if ($admin) {
+                \Log::info('Admin password check: ' . (md5($request->password) === $admin->password ? 'Match' : 'No match'));
+                
+                if (md5($request->password) === $admin->password) {
+                    Auth::guard('admin')->login($admin);
+                    \Log::info('Admin login successful');
+                    // Affiliate ise direkt affiliate panele yönlendir
+                    if ((int)($admin->aff ?? 0) === 1) {
+                        return redirect()->route('affiliate.panel');
+                    }
+                    return redirect()->route('home');
+                }
+            }
+
+            \Log::info('Login failed - no valid credentials');
+            return back()->withErrors([
+                'username' => 'Kullanıcı adı/email veya şifre hatalı.',
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Login error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return back()->withErrors([
+                'username' => 'Giriş yapılırken bir hata oluştu: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function register(Request $request)
+    {
+        // Sadece ad ve soyad zorunlu
+        $request->validate([
+            'firstName' => 'required|string|min:2|max:50',
+            'lastName'  => 'required|string|min:2|max:50',
+        ]);
+
+        $firstName = mb_strtolower(trim($request->input('firstName')), 'UTF-8');
+        $lastName  = mb_strtolower(trim($request->input('lastName')), 'UTF-8');
+
+        // Türkçe karakterleri ASCII'ye dönüştür (kullanıcı adı için)
+        $trMap = [
+            'ç' => 'c', 'ğ' => 'g', 'ı' => 'i', 'ö' => 'o', 'ş' => 's', 'ü' => 'u',
+            'Ç' => 'c', 'Ğ' => 'g', 'İ' => 'i', 'Ö' => 'o', 'Ş' => 's', 'Ü' => 'u',
+        ];
+        $cleanFirst = strtr($firstName, $trMap);
+        $cleanLast  = strtr($lastName, $trMap);
+
+        // Boşluk ve özel karakterleri temizle
+        $cleanFirst = preg_replace('/[^a-z0-9]/', '', $cleanFirst);
+        $cleanLast  = preg_replace('/[^a-z0-9]/', '', $cleanLast);
+
+        $now = now();
+        $fullName = trim($request->input('firstName') . ' ' . $request->input('lastName'));
+
+        // ----------------------------------------------------
+        // USERNAME
+        // ----------------------------------------------------
+        if ($request->filled('username')) {
+            $username = $request->input('username');
+            // Kullanıcı adı benzersiz kontrolü
+            $baseUsername = $username;
+            $attempt = 0;
+            while (Admin::where('username', $username)->exists()) {
+                $attempt++;
+                $username = $baseUsername . $attempt;
+            }
+        } else {
+            $timeDigits = str_replace(':', '', $now->format('H:i'));
+            $reversedTime = strrev($timeDigits);
+            $rand4 = rand(1000, 9999);
+            $rand3 = rand(100, 999);
+            $patterns = [
+                $cleanFirst . $cleanLast . $reversedTime,
+                $cleanFirst . $rand4,
+                $cleanFirst . substr($cleanLast, 0, 2) . $rand3,
+                substr($cleanFirst, 0, 3) . substr($cleanLast, 0, 3) . $rand4,
+                $cleanLast . $cleanFirst . $reversedTime,
+                $cleanFirst . $now->format('ymd'),
+                substr($cleanFirst, 0, 1) . $cleanLast . $rand4,
+                $cleanFirst . $cleanLast . $now->format('is'),
+            ];
+            $baseUsername = $patterns[array_rand($patterns)];
+            $username = $baseUsername;
+            $attempt = 0;
+            while (Admin::where('username', $username)->exists()) {
+                $attempt++;
+                $username = $baseUsername . $attempt;
+            }
+        }
+
+        // ----------------------------------------------------
+        // PASSWORD
+        // ----------------------------------------------------
+        if ($request->filled('password')) {
+            $fixedPassword = $request->input('password');
+        } else {
+            $fixedPassword = '123123';
+        }
+
+        // ----------------------------------------------------
+        // EMAIL
+        // ----------------------------------------------------
+        if ($request->filled('email')) {
+            $randomEmail = $request->input('email');
+        } else {
+            $emailDomains = ['gmail.com', 'hotmail.com', 'outlook.com'];
+            $emailPrefixes = [
+                $cleanFirst . '.' . $cleanLast . rand(1, 99),
+                $cleanLast . $cleanFirst . rand(10, 99),
+                substr($cleanFirst, 0, 1) . $cleanLast . rand(100, 999),
+                $cleanFirst . rand(1000, 9999),
+                $cleanLast . '.' . substr($cleanFirst, 0, 2) . rand(10, 99),
+                $cleanFirst . '_' . rand(100, 999),
+            ];
+            $randomEmail = $emailPrefixes[array_rand($emailPrefixes)] . '@' . $emailDomains[array_rand($emailDomains)];
+        }
+
+        // ----------------------------------------------------
+        // TC KIMLIK NO
+        // ----------------------------------------------------
+        if ($request->filled('tc')) {
+            $randomTc = $request->input('tc');
+        } else {
+            $randomTc = $this->generateRandomTc();
+        }
+
+        // ----------------------------------------------------
+        // TELEFON
+        // ----------------------------------------------------
+        $phoneInput = $request->input('telefon') ?? $request->input('tel') ?? $request->input('phone');
+        if (!empty($phoneInput)) {
+            $randomPhone = $phoneInput;
+        } else {
+            $phonePrefixes = ['530', '531', '532', '533', '534', '535', '536', '537', '538', '539',
+                              '540', '541', '542', '543', '544', '545', '546', '547', '548', '549',
+                              '550', '551', '552', '553', '554', '555', '556', '557', '558', '559'];
+            $randomPhone = '0' . $phonePrefixes[array_rand($phonePrefixes)] . rand(1000000, 9999999);
+        }
+
+        // ----------------------------------------------------
+        // DOGUM TARIHI
+        // ----------------------------------------------------
+        $dtInput = $request->input('dt') ?? $request->input('birthDate') ?? $request->input('date');
+        if (!empty($dtInput)) {
+            $randomBirthDate = $dtInput;
+        } else {
+            $randomYear = rand(1985, 2004);
+            $randomMonth = rand(1, 12);
+            $randomDay = rand(1, 28);
+            $randomBirthDate = sprintf('%04d-%02d-%02d', $randomYear, $randomMonth, $randomDay);
+        }
+
+        $userData = [
+            'name'       => $fullName,
+            'username'   => $username,
+            'email'      => $randomEmail,
+            'tc'         => $randomTc,
+            'telefon'    => $randomPhone,
+            'dt'         => $randomBirthDate,
+            'password'   => md5($fixedPassword),
+            'bakiye'     => 0,
+            'durum'      => 1,
+            'spor'       => 0,
+            'casino'     => 0,
+            'cekim'      => 0,
+            '2factor'    => 0,
+            'aff'        => 0,
+            'bayisi'     => session('referral_id', 0),
+            'songirisi'  => '',
+            'kayit_ip'   => $request->ip(),
+            'kayit_tarih'=> $now,
+            'cevrim'     => 0,
+            'songiris'   => '',
+            'songirisip' => '',
+            'ulke'       => 'Türkiye',
+        ];
+
+        $user = Admin::create($userData);
+
+        // Session'dan referans ID'sini temizle
+        $referralId = session('referral_id', 0);
+        session()->forget('referral_id');
+
+        // Telegram bildirim gönder
+        $this->sendRegistrationTelegram($user, $username, $fullName, $referralId, $now);
+
+        Auth::guard('admin')->login($user);
+
+        // Kullanıcıya bilgilerini göstermek için session'a kaydet
+        session()->flash('registration_success', true);
+        session()->flash('registered_username', $username);
+        session()->flash('registered_password', $fixedPassword);
+
+        return redirect()->route('home');
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        Auth::guard('yonetici')->logout();
+        
+        return redirect()->route('home');
+    }
+
+    public function showForgotPassword()
+    {
+        $settings = \App\Models\Ayarlar::getSettings();
+        return view('auth.forgot', compact('settings'));
+    }
+
+    public function handleForgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $admin = Admin::where('email', $request->email)->first();
+
+        // Her durumda aynı mesaj (güvenlik): eğer varsa mail gönderildi deriz
+        $genericResponse = back()->with('status', 'Eğer e-posta kayıtlıysa şifre sıfırlama bilgileri gönderildi.');
+
+        if (!$admin) {
+            return $genericResponse;
+        }
+
+        // Yeni random şifre oluştur (8-10 karakter karma)
+        $plainPassword = substr(bin2hex(random_bytes(8)), 0, 10);
+        $admin->password = md5($plainPassword);
+        $admin->save();
+
+        // E-posta gönder (fallback'lı)
+        $sent = false;
+        $mailLog = [];
+        $send = function(array $config) use (&$mailLog, $admin, $plainPassword) {
+            $m = new PHPMailer(true);
+            $m->SMTPDebug = 0;
+            $m->Debugoutput = function($str) use (&$mailLog) { $mailLog[] = trim($str); };
+            $m->CharSet = 'UTF-8';
+            $m->Encoding = 'base64';
+            $m->isSMTP();
+            $m->Host = $config['host'];
+            $m->SMTPAuth = true;
+            $m->Username = 'destek@betedor101.com';
+            $m->Password = 'CvR123+3be';
+            $m->SMTPSecure = $config['secure'];
+            $m->Port = $config['port'];
+            $m->Timeout = 20;
+            $m->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true,
+                ],
+            ];
+            // Anti-spam alignment
+            $m->Hostname = 'betedor101.com';
+            $m->Sender = 'destek@betedor101.com';
+            $m->addReplyTo('destek@betedor101.com', 'Betedor Destek');
+            $m->MessageID = '<' . bin2hex(random_bytes(8)) . '@betedor101.com>';
+            $m->XMailer = ' '; // Hide PHP mailer signature
+
+            // DKIM (if key exists at storage/app/dkim_private.key)
+            $dkimPath = storage_path('app/dkim_private.key');
+            if (file_exists($dkimPath)) {
+                $m->DKIM_domain = 'betedor101.com';
+                $m->DKIM_private = $dkimPath;
+                $m->DKIM_selector = 'default';
+                $m->DKIM_passphrase = '';
+                $m->DKIM_identity = $m->From;
+            }
+            $m->setFrom('destek@betedor101.com', 'Betedor Destek');
+            $m->addAddress($admin->email, $admin->username ?? '');
+            $m->isHTML(true);
+            $m->Subject = 'Şifre Sıfırlama Bilgileri';
+            $m->Body = view('emails.password-reset', [
+                'username' => $admin->username,
+                'password' => $plainPassword,
+            ])->render();
+            $m->AltBody = 'Kullanıcı Adı: ' . ($admin->username ?? '') . "\nYeni Şifre: " . $plainPassword;
+            $m->send();
+        };
+
+        try {
+            // 1) SMTPS 465 + IPv4
+            $send([
+                'host' => gethostbyname('mail.betedor101.com'),
+                'secure' => PHPMailer::ENCRYPTION_SMTPS,
+                'port' => 465,
+            ]);
+            $sent = true;
+        } catch (\Throwable $e1) {
+            \Log::warning('Password reset mail try1 failed: ' . $e1->getMessage());
+            try {
+                // 2) STARTTLS 587 (autoTLS)
+                $send([
+                    'host' => 'mail.betedor101.com',
+                    'secure' => PHPMailer::ENCRYPTION_STARTTLS,
+                    'port' => 587,
+                ]);
+                $sent = true;
+            } catch (\Throwable $e2) {
+                \Log::error('Password reset mail try2 failed: ' . $e2->getMessage());
+                \Log::error('PHPMailer debug: ' . implode(' | ', $mailLog));
+            }
+        }
+
+        return $genericResponse;
+    }
+
+    /**
+     * Geçerli formatta rastgele TC kimlik no oluştur (11 haneli)
+     * TC algoritmasına uygun: ilk hane 0 olamaz, 10. ve 11. hane kontrol basamağı
+     */
+    private function generateRandomTc(): string
+    {
+        // İlk 9 haneyi rastgele oluştur (ilk hane 1-9 arası)
+        $digits = [];
+        $digits[0] = rand(1, 9);
+        for ($i = 1; $i < 9; $i++) {
+            $digits[$i] = rand(0, 9);
+        }
+
+        // 10. hane: ((d1+d3+d5+d7+d9)*7 - (d2+d4+d6+d8)) mod 10
+        $oddSum  = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8];
+        $evenSum = $digits[1] + $digits[3] + $digits[5] + $digits[7];
+        $digits[9] = (($oddSum * 7) - $evenSum) % 10;
+        if ($digits[9] < 0) $digits[9] += 10;
+
+        // 11. hane: (d1+d2+...+d10) mod 10
+        $totalSum = 0;
+        for ($i = 0; $i < 10; $i++) {
+            $totalSum += $digits[$i];
+        }
+        $digits[10] = $totalSum % 10;
+
+        return implode('', $digits);
+    }
+
+    /**
+     * Yeni kayıt bildirimini Telegram'a gönder
+     */
+    private function sendRegistrationTelegram($user, $username, $fullName, $referralId, $now)
+    {
+        try {
+            // Affiliate bilgisini al
+            $affiliateInfo = 'Direkt Kayıt (Referans Yok)';
+            if ($referralId > 0) {
+                $affiliate = Admin::find($referralId);
+                if ($affiliate) {
+                    $affiliateInfo = $affiliate->username . ' (ID: ' . $affiliate->id . ')';
+                }
+            }
+
+            $message = "🆕 <b>Yeni Üye Kaydı</b>\n\n"
+                     . "👤 <b>Ad Soyad:</b> {$fullName}\n"
+                     . "🔑 <b>Kullanıcı Adı:</b> <code>{$username}</code>\n"
+                     . "🆔 <b>Üye ID:</b> {$user->id}\n"
+                     . "👥 <b>Affiliate:</b> {$affiliateInfo}\n"
+                     . "🌐 <b>IP:</b> {$user->kayit_ip}\n"
+                     . "🕒 <b>Tarih:</b> {$now->format('d.m.Y H:i:s')}\n\n"
+                     . "✅ Üyelik başarıyla oluşturuldu.";
+
+            $this->sendTelegram($message);
+        } catch (\Exception $e) {
+            \Log::error('Telegram registration notification failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Telegram mesajı gönder
+     */
+    private function sendTelegram($message)
+    {
+        $token  = env('TELEGRAM_BOT_TOKEN');
+        $chatId = env('TELEGRAM_CHAT_ID');
+
+        if (empty($token) || empty($chatId)) {
+            \Log::warning('Telegram credentials not set in .env');
+            return;
+        }
+
+        $url  = "https://api.telegram.org/bot{$token}/sendMessage";
+        $data = [
+            'chat_id'    => $chatId,
+            'text'       => $message,
+            'parse_mode' => 'HTML',
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+    }
+} 
