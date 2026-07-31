@@ -53,7 +53,7 @@
             </div>
             @endif
             
-            <form method="POST" action="{{ route('register') }}" class="relative space-y-6" id="registration-form">
+            <form method="POST" action="{{ route('register') }}" class="relative space-y-6" id="registration-form" novalidate>
                 @csrf
                 
                 <!-- Step 1: Personal Information -->
