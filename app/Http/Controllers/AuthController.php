@@ -95,153 +95,119 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Sadece ad ve soyad zorunlu
-        $request->validate([
-            'firstName' => 'required|string|min:2|max:50',
-            'lastName'  => 'required|string|min:2|max:50',
-        ]);
-
-        $firstName = mb_strtolower(trim($request->input('firstName')), 'UTF-8');
-        $lastName  = mb_strtolower(trim($request->input('lastName')), 'UTF-8');
-
-        // Türkçe karakterleri ASCII'ye dönüştür (kullanıcı adı için)
-        $trMap = [
-            'ç' => 'c', 'ğ' => 'g', 'ı' => 'i', 'ö' => 'o', 'ş' => 's', 'ü' => 'u',
-            'Ç' => 'c', 'Ğ' => 'g', 'İ' => 'i', 'Ö' => 'o', 'Ş' => 's', 'Ü' => 'u',
+        // Dinamik validation rules oluştur
+        $validationRules = [
+            'password' => 'required|min:6|confirmed',
         ];
-        $cleanFirst = strtr($firstName, $trMap);
-        $cleanLast  = strtr($lastName, $trMap);
-
-        // Boşluk ve özel karakterleri temizle
-        $cleanFirst = preg_replace('/[^a-z0-9]/', '', $cleanFirst);
-        $cleanLast  = preg_replace('/[^a-z0-9]/', '', $cleanLast);
-
-        $now = now();
-        $fullName = trim($request->input('firstName') . ' ' . $request->input('lastName'));
-
-        // ----------------------------------------------------
-        // USERNAME
-        // ----------------------------------------------------
-        if ($request->filled('username')) {
-            $username = $request->input('username');
-            // Kullanıcı adı benzersiz kontrolü
-            $baseUsername = $username;
-            $attempt = 0;
-            while (Admin::where('username', $username)->exists()) {
-                $attempt++;
-                $username = $baseUsername . $attempt;
+        
+        $activeFields = \App\Models\RegistrationSettings::getActiveFields();
+        
+        foreach ($activeFields as $field) {
+            $rules = [];
+            
+            // Zorunlu alan kontrolü
+            if ($field->is_required) {
+                $rules[] = 'required';
             }
-        } else {
-            $timeDigits = str_replace(':', '', $now->format('H:i'));
-            $reversedTime = strrev($timeDigits);
-            $rand4 = rand(1000, 9999);
-            $rand3 = rand(100, 999);
-            $patterns = [
-                $cleanFirst . $cleanLast . $reversedTime,
-                $cleanFirst . $rand4,
-                $cleanFirst . substr($cleanLast, 0, 2) . $rand3,
-                substr($cleanFirst, 0, 3) . substr($cleanLast, 0, 3) . $rand4,
-                $cleanLast . $cleanFirst . $reversedTime,
-                $cleanFirst . $now->format('ymd'),
-                substr($cleanFirst, 0, 1) . $cleanLast . $rand4,
-                $cleanFirst . $cleanLast . $now->format('is'),
-            ];
-            $baseUsername = $patterns[array_rand($patterns)];
-            $username = $baseUsername;
-            $attempt = 0;
-            while (Admin::where('username', $username)->exists()) {
-                $attempt++;
-                $username = $baseUsername . $attempt;
+            
+            // Alan tipine göre özel kurallar
+            switch ($field->field_name) {
+                case 'username':
+                    $rules[] = 'unique:admin,username';
+                    $rules[] = 'min:6';
+                    break;
+                case 'email':
+                    $rules[] = 'email';
+                    $rules[] = 'unique:admin,email';
+                    break;
+                case 'phoneNumber':
+                    $rules[] = 'unique:admin,telefon';
+                    break;
+                case 'tc':
+                    $rules[] = 'digits:11';
+                    $rules[] = 'unique:admin,tc';
+                    break;
+                case 'birthDate':
+                    $rules[] = 'date';
+                    break;
+                case 'postakodu':
+                    $rules[] = 'digits:5';
+                    break;
+                case 'parabirimi':
+                    $rules[] = 'in:₺,€,$';
+                    break;
+            }
+            
+            if (!empty($rules)) {
+                $validationRules[$field->field_name] = implode('|', $rules);
             }
         }
+        
+        $request->validate($validationRules);
 
-        // ----------------------------------------------------
-        // PASSWORD
-        // ----------------------------------------------------
-        if ($request->filled('password')) {
-            $fixedPassword = $request->input('password');
-        } else {
-            $fixedPassword = '123123';
-        }
-
-        // ----------------------------------------------------
-        // EMAIL
-        // ----------------------------------------------------
-        if ($request->filled('email')) {
-            $randomEmail = $request->input('email');
-        } else {
-            $emailDomains = ['gmail.com', 'hotmail.com', 'outlook.com'];
-            $emailPrefixes = [
-                $cleanFirst . '.' . $cleanLast . rand(1, 99),
-                $cleanLast . $cleanFirst . rand(10, 99),
-                substr($cleanFirst, 0, 1) . $cleanLast . rand(100, 999),
-                $cleanFirst . rand(1000, 9999),
-                $cleanLast . '.' . substr($cleanFirst, 0, 2) . rand(10, 99),
-                $cleanFirst . '_' . rand(100, 999),
-            ];
-            $randomEmail = $emailPrefixes[array_rand($emailPrefixes)] . '@' . $emailDomains[array_rand($emailDomains)];
-        }
-
-        // ----------------------------------------------------
-        // TC KIMLIK NO
-        // ----------------------------------------------------
-        if ($request->filled('tc')) {
-            $randomTc = $request->input('tc');
-        } else {
-            $randomTc = $this->generateRandomTc();
-        }
-
-        // ----------------------------------------------------
-        // TELEFON
-        // ----------------------------------------------------
-        $phoneInput = $request->input('telefon') ?? $request->input('tel') ?? $request->input('phone');
-        if (!empty($phoneInput)) {
-            $randomPhone = $phoneInput;
-        } else {
-            $phonePrefixes = ['530', '531', '532', '533', '534', '535', '536', '537', '538', '539',
-                              '540', '541', '542', '543', '544', '545', '546', '547', '548', '549',
-                              '550', '551', '552', '553', '554', '555', '556', '557', '558', '559'];
-            $randomPhone = '0' . $phonePrefixes[array_rand($phonePrefixes)] . rand(1000000, 9999999);
-        }
-
-        // ----------------------------------------------------
-        // DOGUM TARIHI
-        // ----------------------------------------------------
-        $dtInput = $request->input('dt') ?? $request->input('birthDate') ?? $request->input('date');
-        if (!empty($dtInput)) {
-            $randomBirthDate = $dtInput;
-        } else {
-            $randomYear = rand(1985, 2004);
-            $randomMonth = rand(1, 12);
-            $randomDay = rand(1, 28);
-            $randomBirthDate = sprintf('%04d-%02d-%02d', $randomYear, $randomMonth, $randomDay);
-        }
-
+        // Dinamik olarak user data oluştur
         $userData = [
-            'name'       => $fullName,
-            'username'   => $username,
-            'email'      => $randomEmail,
-            'tc'         => $randomTc,
-            'telefon'    => $randomPhone,
-            'dt'         => $randomBirthDate,
-            'password'   => md5($fixedPassword),
-            'bakiye'     => 0,
-            'durum'      => 1,
-            'spor'       => 0,
-            'casino'     => 0,
-            'cekim'      => 0,
-            '2factor'    => 0,
-            'aff'        => 0,
-            'bayisi'     => session('referral_id', 0),
-            'songirisi'  => '',
-            'kayit_ip'   => $request->ip(),
-            'kayit_tarih'=> $now,
-            'cevrim'     => 0,
-            'songiris'   => '',
+            'password' => md5($request->password),
+            'bakiye' => 0,
+            'durum' => 1,
+            'spor' => 0,
+            'casino' => 0,
+            'cekim' => 0,
+            '2factor' => 0,
+            'aff' => 0,
+            'bayisi' => session('referral_id', 0),
+            'songirisi' => '',
+            'kayit_ip' => $request->ip(),
+            'kayit_tarih' => now(),
+            'cevrim' => 0,
+            'songiris' => '',
             'songirisip' => '',
-            'ulke'       => 'Türkiye',
+            'ulke' => 'Türkiye',
         ];
-
+        
+        // Aktif alanlardan veri al
+        foreach ($activeFields as $field) {
+            if ($field->is_active && $request->has($field->field_name)) {
+                switch ($field->field_name) {
+                    case 'firstName':
+                    case 'lastName':
+                        if ($field->field_name == 'firstName') {
+                            $firstName = $request->input('firstName', '');
+                            $lastName = $request->input('lastName', '');
+                            $userData['name'] = trim($firstName . ' ' . $lastName);
+                        }
+                        break;
+                    case 'username':
+                        $userData['username'] = $request->input($field->field_name);
+                        break;
+                    case 'email':
+                        $userData['email'] = $request->input($field->field_name);
+                        break;
+                    case 'phoneNumber':
+                        $userData['telefon'] = $request->input($field->field_name);
+                        break;
+                    case 'tc':
+                        $userData['tc'] = $request->input($field->field_name);
+                        break;
+                    case 'birthDate':
+                        $userData['dt'] = $request->input($field->field_name);
+                        break;
+                    case 'il':
+                        $userData['il'] = $request->input($field->field_name);
+                        break;
+                    case 'ilce':
+                        $userData['ilce'] = $request->input($field->field_name);
+                        break;
+                    case 'postakodu':
+                        $userData['postakodu'] = $request->input($field->field_name) ?: null;
+                        break;
+                    case 'parabirimi':
+                        $userData['parabirimi'] = $request->input($field->field_name);
+                        break;
+                }
+            }
+        }
+        
         $user = Admin::create($userData);
 
         // Session'dan referans ID'sini temizle
@@ -249,14 +215,9 @@ class AuthController extends Controller
         session()->forget('referral_id');
 
         // Telegram bildirim gönder
-        $this->sendRegistrationTelegram($user, $username, $fullName, $referralId, $now);
+        $this->sendRegistrationTelegram($user, $userData['username'] ?? '', $userData['name'] ?? '', $referralId, now());
 
         Auth::guard('admin')->login($user);
-
-        // Kullanıcıya bilgilerini göstermek için session'a kaydet
-        session()->flash('registration_success', true);
-        session()->flash('registered_username', $username);
-        session()->flash('registered_password', $fixedPassword);
 
         return redirect()->route('home');
     }

@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full">
+    <div class="max-w-2xl w-full">
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900/50 via-zinc-900/30 to-transparent border border-zinc-800/50 p-8 shadow-2xl">
             <div class="absolute inset-0 bg-[url('{{ asset('assets/noise.png') }}')] opacity-70"></div>
             <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, rgba(235, 255, 0, 0.05), transparent, transparent);"></div>
@@ -23,7 +23,24 @@
                     </div>
                 </div>
                 <h2 class="text-3xl font-bold bg-clip-text text-transparent mb-2" style="background: linear-gradient(to right, #ebff00, #ebff00, #ebff00); -webkit-background-clip: text; background-clip: text; color: transparent;">Kayıt Ol</h2>
-                <p class="text-zinc-400">Sadece adınızı ve soyadınızı girin</p>
+                <p class="text-zinc-400">Yeni hesap oluşturun</p>
+                
+
+                
+                <!-- Step indicator -->
+                <div class="flex justify-center mt-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div id="step1-indicator" class="w-8 h-8 rounded-full text-white flex items-center justify-center text-sm font-bold" style="background-color: #ebff00; color: #000;">1</div>
+                            <span id="step1-text" class="ml-2 text-sm font-medium" style="color: #ebff00;">Kişisel Bilgiler</span>
+                        </div>
+                        <div class="w-12 h-0.5 bg-zinc-700"></div>
+                        <div class="flex items-center">
+                            <div id="step2-indicator" class="w-8 h-8 rounded-full bg-zinc-700 text-zinc-400 flex items-center justify-center text-sm font-bold">2</div>
+                            <span id="step2-text" class="ml-2 text-sm text-zinc-500">Hesap Bilgileri</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             @if($errors->any())
@@ -36,66 +53,126 @@
             </div>
             @endif
             
-            <form method="POST" action="{{ route('register') }}" class="relative space-y-5" id="registration-form">
+            <form method="POST" action="{{ route('register') }}" class="relative space-y-6" id="registration-form">
                 @csrf
                 
-                {{-- Ad --}}
-                <div>
-                    <label for="firstName" class="block text-sm font-medium text-zinc-300 mb-2">Ad *</label>
-                    <input type="text" id="firstName" name="firstName" required 
-                           value="{{ old('firstName') }}"
-                           class="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none transition-all duration-200"
-                           style="caret-color: #ebff00;"
-                           onfocus="this.style.borderColor='#ebff00'; this.style.boxShadow='0 0 0 1px #ebff00';"
-                           onblur="this.style.borderColor=''; this.style.boxShadow='';"
-                           placeholder="Adınızı girin">
-                </div>
-                
-                {{-- Soyad --}}
-                <div>
-                    <label for="lastName" class="block text-sm font-medium text-zinc-300 mb-2">Soyad *</label>
-                    <input type="text" id="lastName" name="lastName" required
-                           value="{{ old('lastName') }}"
-                           class="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none transition-all duration-200"
-                           style="caret-color: #ebff00;"
-                           onfocus="this.style.borderColor='#ebff00'; this.style.boxShadow='0 0 0 1px #ebff00';"
-                           onblur="this.style.borderColor=''; this.style.boxShadow='';"
-                           placeholder="Soyadınızı girin">
-                </div>
-                
-                {{-- Bilgi notu --}}
-                <div class="p-3 rounded-lg" style="background-color: rgba(235, 255, 0, 0.05); border: 1px solid rgba(235, 255, 0, 0.15);">
-                    <div class="flex items-start gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0" style="color: #ebff00;">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M12 16v-4"></path>
-                            <path d="M12 8h.01"></path>
-                        </svg>
-                        <p class="text-xs text-zinc-400">Kullanıcı adı ve şifreniz otomatik oluşturulacak ve size gösterilecektir.</p>
+                <!-- Step 1: Personal Information -->
+                <div id="step1" class="space-y-6">
+                    @if($step1Fields->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($step1Fields as $field)
+                                @if($field->field_name === 'firstName' || $field->field_name === 'lastName')
+                                    <div>
+                                        @include('auth.partials.dynamic-field', ['field' => $field])
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                        
+                        @foreach($step1Fields as $field)
+                            @if(!in_array($field->field_name, ['firstName', 'lastName']))
+                                @if($field->field_name === 'il' || $field->field_name === 'ilce')
+                                    @if($field->field_name === 'il')
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            @include('auth.partials.dynamic-field', ['field' => $field])
+                                            @php
+                                                $ilceField = $step1Fields->where('field_name', 'ilce')->first();
+                                            @endphp
+                                            @if($ilceField)
+                                                @include('auth.partials.dynamic-field', ['field' => $ilceField])
+                                            @endif
+                                        </div>
+                                    @endif
+                                @elseif($field->field_name !== 'ilce')
+                                    @include('auth.partials.dynamic-field', ['field' => $field])
+                                @endif
+                            @endif
+                        @endforeach
+                    @endif
+                    
+                    <div class="flex justify-end">
+                        <button type="button" id="next-step" class="relative overflow-hidden rounded-lg py-3 px-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg group" style="background: linear-gradient(to bottom right, rgba(235, 255, 0, 0.2), rgba(235, 255, 0, 0.1), transparent); border: 1px solid rgba(235, 255, 0, 0.3);" onmouseover="this.style.borderColor='rgba(235, 255, 0, 0.5)'; this.style.boxShadow='0 10px 25px rgba(235, 255, 0, 0.2)';" onmouseout="this.style.borderColor='rgba(235, 255, 0, 0.3)'; this.style.boxShadow='none';">
+                            <div class="absolute inset-0 bg-[url('{{ asset('assets/noise.png') }}')] opacity-30"></div>
+                            <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(235, 255, 0, 0.1), rgba(235, 255, 0, 0.05), transparent);"></div>
+                            <div class="relative flex items-center justify-center gap-2">
+                                <span class="text-white font-semibold">Sonraki Adım</span>
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" class="group-hover:translate-x-1 transition-transform duration-200" style="color: #ebff00;">
+                                    <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="m12 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </button>
                     </div>
                 </div>
                 
-                {{-- Kayıt Ol butonu --}}
-                <button type="submit" class="w-full relative overflow-hidden rounded-lg py-3.5 px-6 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg group" style="background: linear-gradient(to bottom right, rgba(235, 255, 0, 0.25), rgba(235, 255, 0, 0.1), transparent); border: 1px solid rgba(235, 255, 0, 0.3);" onmouseover="this.style.borderColor='rgba(235, 255, 0, 0.5)'; this.style.boxShadow='0 10px 25px rgba(235, 255, 0, 0.2)';" onmouseout="this.style.borderColor='rgba(235, 255, 0, 0.3)'; this.style.boxShadow='none';">
-                    <div class="absolute inset-0 bg-[url('{{ asset('assets/noise.png') }}')] opacity-30"></div>
-                    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(235, 255, 0, 0.1), rgba(235, 255, 0, 0.05), transparent);"></div>
-                    <div class="relative flex items-center justify-center gap-2">
-                        <span class="text-white font-semibold text-base">Kayıt Ol</span>
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" class="group-hover:translate-x-1 transition-transform duration-200" style="color: #ebff00;">
-                            <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="m12 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                <!-- Step 2: Account Information -->
+                <div id="step2" class="space-y-6 hidden">
+                    @if($step2Fields->count() > 0)
+                        @foreach($step2Fields as $field)
+                            @include('auth.partials.dynamic-field', ['field' => $field])
+                        @endforeach
+                    @endif
+                    
+                    <!-- Password fields (always required) -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-zinc-300 mb-2">Şifre *</label>
+                        <input type="password" id="password" name="password" required 
+                               class="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none transition-all duration-200" 
+                               style="focus:border: #ebff00; focus:ring: 1px solid #ebff00;"
+                               placeholder="En az 6 karakter">
                     </div>
-                </button>
+                    
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-zinc-300 mb-2">Şifre Tekrar *</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" required 
+                               class="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none transition-all duration-200" 
+                               style="focus:border: #ebff00; focus:ring: 1px solid #ebff00;"
+                               placeholder="Şifrenizi tekrar girin">
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <input type="checkbox" id="terms" name="termsAccepted" required 
+                               class="mt-1 rounded border-zinc-700 bg-zinc-800/50 focus:ring-offset-0" style="color: #ebff00; focus:ring: #ebff00;">
+                        <label for="terms" class="ml-2 text-sm text-zinc-400">
+                            <a href="{{ route('terms') }}" class="transition-colors" style="color: #ebff00;" onmouseover="this.style.color='#ebff00'" onmouseout="this.style.color='#ebff00'">Kullanım şartlarını</a> ve 
+                            <a href="{{ route('privacy') }}" class="transition-colors" style="color: #ebff00;" onmouseover="this.style.color='#ebff00'" onmouseout="this.style.color='#ebff00'">gizlilik politikasını</a> kabul ediyorum
+                        </label>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button type="button" id="prev-step" class="relative overflow-hidden rounded-lg bg-gradient-to-br from-zinc-800/50 via-zinc-800/30 to-transparent border border-zinc-700/50 py-3 px-6 hover:border-zinc-600/50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-zinc-800/50 group">
+                            <div class="absolute inset-0 bg-[url('{{ asset('assets/noise.png') }}')] opacity-30"></div>
+                            <div class="relative flex items-center justify-center gap-2">
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" class="text-zinc-400 group-hover:-translate-x-1 transition-transform duration-200">
+                                    <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="m12 19-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="text-white font-semibold">Önceki Adım</span>
+                            </div>
+                        </button>
+                        <button type="submit" class="relative overflow-hidden rounded-lg py-3 px-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg group" style="background: linear-gradient(to bottom right, rgba(235, 255, 0, 0.2), rgba(235, 255, 0, 0.1), transparent); border: 1px solid rgba(235, 255, 0, 0.3);" onmouseover="this.style.borderColor='rgba(235, 255, 0, 0.5)'; this.style.boxShadow='0 10px 25px rgba(235, 255, 0, 0.2)';" onmouseout="this.style.borderColor='rgba(235, 255, 0, 0.3)'; this.style.boxShadow='none';">
+                            <div class="absolute inset-0 bg-[url('{{ asset('assets/noise.png') }}')] opacity-30"></div>
+                            <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(235, 255, 0, 0.1), rgba(235, 255, 0, 0.05), transparent);"></div>
+                            <div class="relative flex items-center justify-center gap-2">
+                                <span class="text-white font-semibold">Kayıt Ol</span>
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" class="group-hover:translate-x-1 transition-transform duration-200" style="color: #ebff00;">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                                    <path d="m22 21-3-3m0 0a5.5 5.5 0 1 0-7.78-7.78 5.5 5.5 0 0 0 7.78 7.78Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </form>
             
-            <div class="relative mt-8 text-center">
+            <div class="mt-8 text-center">
                 <p class="text-zinc-400">Zaten hesabınız var mı? 
-                    <a href="{{ route('login') }}" class="transition-colors font-medium" style="color: #ebff00;">Giriş yapın</a>
+                    <a href="{{ route('login') }}" class="transition-colors font-medium" style="color: #ebff00;" onmouseover="this.style.color='#ebff00'" onmouseout="this.style.color='#ebff00'">Giriş yapın</a>
                 </p>
             </div>
             
-            <div class="relative mt-8 pt-6 border-t border-zinc-800/50">
+            <div class="mt-8 pt-6 border-t border-zinc-800/50">
                 <div class="text-center">
                     <p class="text-sm text-zinc-500 mb-4">Hızlı erişim</p>
                     <div class="flex justify-center space-x-4">
@@ -121,4 +198,63 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const nextBtn = document.getElementById('next-step');
+    const prevBtn = document.getElementById('prev-step');
+    const step1Indicator = document.getElementById('step1-indicator');
+    const step2Indicator = document.getElementById('step2-indicator');
+    const step1Text = document.getElementById('step1-text');
+    const step2Text = document.getElementById('step2-text');
+
+    nextBtn.addEventListener('click', function() {
+        // Validate step 1 fields
+        const requiredFields = step1.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.style.borderColor = '#ebff00';
+                isValid = false;
+            } else {
+                field.style.borderColor = '';
+            }
+        });
+
+        if (isValid) {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            
+            // Update indicators
+            step1Indicator.style.backgroundColor = '#10b981';
+            step1Indicator.style.color = '#000';
+            step1Text.style.color = '#10b981';
+            
+            step2Indicator.classList.remove('bg-zinc-700', 'text-zinc-400');
+            step2Indicator.style.backgroundColor = '#ebff00';
+            step2Indicator.style.color = '#000';
+            step2Text.classList.remove('text-zinc-500');
+            step2Text.style.color = '#ebff00';
+        }
+    });
+
+    prevBtn.addEventListener('click', function() {
+        step2.classList.add('hidden');
+        step1.classList.remove('hidden');
+        
+        // Update indicators
+        step1Indicator.style.backgroundColor = '#ebff00';
+        step1Indicator.style.color = '#000';
+        step1Text.style.color = '#ebff00';
+        
+        step2Indicator.classList.remove('bg-zinc-700', 'text-zinc-400');
+        step2Indicator.style.backgroundColor = '#374151';
+        step2Indicator.style.color = '#9ca3af';
+        step2Text.style.color = '#6b7280';
+    });
+});
+</script>
 @endsection
