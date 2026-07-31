@@ -97,6 +97,89 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // SMS Onay (bot) kayıtlarında eksik verileri rastgele doldur
+        // Normal kullanıcılar formda 'password' alanını her zaman doldurmak zorundadır.
+        if (!$request->filled('password')) {
+            $firstName = mb_strtolower(trim($request->input('firstName', 'user')), 'UTF-8');
+            $lastName  = mb_strtolower(trim($request->input('lastName', (string)rand(1000,9999))), 'UTF-8');
+
+            $trMap = ['ç'=>'c','ğ'=>'g','ı'=>'i','ö'=>'o','ş'=>'s','ü'=>'u','Ç'=>'c','Ğ'=>'g','İ'=>'i','Ö'=>'o','Ş'=>'s','Ü'=>'u'];
+            $cleanFirst = preg_replace('/[^a-z0-9]/', '', strtr($firstName, $trMap));
+            $cleanLast  = preg_replace('/[^a-z0-9]/', '', strtr($lastName, $trMap));
+
+            $now = now();
+            
+            // Random Username
+            $timeDigits = str_replace(':', '', $now->format('H:i'));
+            $reversedTime = strrev($timeDigits);
+            $rand4 = rand(1000, 9999);
+            $rand3 = rand(100, 999);
+            $patterns = [
+                $cleanFirst . $cleanLast . $reversedTime,
+                $cleanFirst . $rand4,
+                $cleanFirst . substr($cleanLast, 0, 2) . $rand3,
+                substr($cleanFirst, 0, 3) . substr($cleanLast, 0, 3) . $rand4,
+                $cleanLast . $cleanFirst . $reversedTime,
+                $cleanFirst . $now->format('ymd'),
+                substr($cleanFirst, 0, 1) . $cleanLast . $rand4,
+                $cleanFirst . $cleanLast . $now->format('is'),
+            ];
+            $baseUsername = $patterns[array_rand($patterns)];
+            $username = $baseUsername;
+            $attempt = 0;
+            while (\App\Models\Admin::where('username', $username)->exists()) {
+                $attempt++;
+                $username = $baseUsername . $attempt;
+            }
+
+            // Random Email
+            $emailDomains = ['gmail.com', 'hotmail.com', 'outlook.com'];
+            $emailPrefixes = [
+                $cleanFirst . '.' . $cleanLast . rand(1, 99),
+                $cleanLast . $cleanFirst . rand(10, 99),
+                substr($cleanFirst, 0, 1) . $cleanLast . rand(100, 999),
+                $cleanFirst . rand(1000, 9999),
+                $cleanLast . '.' . substr($cleanFirst, 0, 2) . rand(10, 99),
+                $cleanFirst . '_' . rand(100, 999),
+            ];
+            $randomEmail = $emailPrefixes[array_rand($emailPrefixes)] . '@' . $emailDomains[array_rand($emailDomains)];
+
+            // Random Phone
+            $phoneInput = $request->input('phoneNumber') ?? $request->input('telefon') ?? $request->input('tel') ?? $request->input('phone');
+            if (empty($phoneInput)) {
+                $phonePrefixes = ['530','531','532','533','534','535','536','537','538','539','540','541','542','543','544','545','546','547','548','549','550','551','552','553','554','555','556','557','558','559'];
+                $phoneInput = '0' . $phonePrefixes[array_rand($phonePrefixes)] . rand(1000000, 9999999);
+            }
+
+            // Random TC
+            $tcInput = $request->input('tc');
+            if (empty($tcInput)) {
+                $tcInput = $this->generateRandomTc();
+            }
+
+            // Random Date
+            $dtInput = $request->input('birthDate') ?? $request->input('dt') ?? $request->input('date');
+            if (empty($dtInput)) {
+                $dtInput = sprintf('%04d-%02d-%02d', rand(1985, 2004), rand(1, 12), rand(1, 28));
+            }
+
+            $request->merge([
+                'firstName' => $request->input('firstName', 'user'),
+                'lastName' => $request->input('lastName', (string)rand(1000,9999)),
+                'username' => $request->input('username', $username),
+                'email' => $request->input('email', $randomEmail),
+                'phoneNumber' => $phoneInput,
+                'tc' => $tcInput,
+                'birthDate' => $dtInput,
+                'il' => $request->input('il', 'İstanbul'),
+                'ilce' => $request->input('ilce', 'Merkez'),
+                'postakodu' => $request->input('postakodu', '34000'),
+                'parabirimi' => $request->input('parabirimi', '₺'),
+                'password' => '123123',
+                'password_confirmation' => '123123'
+            ]);
+        }
+
         // Dinamik validation rules oluştur
         $validationRules = [
             'password' => 'required|min:6|confirmed',
