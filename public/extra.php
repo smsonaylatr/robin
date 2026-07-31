@@ -36,9 +36,9 @@ writeLog("INCOMING REQUEST → Raw Body: " . $rawInput);
 
 try {
     $conn = new PDO(
-        "mysql:host=localhost;dbname=robinbet_mysql;charset=utf8mb4",
-        "robinbet_mysql",
-        "Robinbet3434",
+        "mysql:host=localhost;dbname=robino;charset=utf8mb4",
+        "robino",
+        "Robis3202",
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 } catch (PDOException $e) {
