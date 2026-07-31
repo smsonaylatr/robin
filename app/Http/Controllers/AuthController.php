@@ -21,6 +21,8 @@ class AuthController extends Controller
     public function showRegister(Request $request)
     {
         $settings = \App\Models\Ayarlar::getSettings();
+        $step1Fields = \App\Models\RegistrationSettings::getStep1Fields();
+        $step2Fields = \App\Models\RegistrationSettings::getStep2Fields();
         
         // Referans ID'sini al ve session'a kaydet
         $refId = $request->get('ref');
@@ -31,7 +33,7 @@ class AuthController extends Controller
             }
         }
         
-        return view('auth.register', compact('settings'));
+        return view('auth.register', compact('settings', 'step1Fields', 'step2Fields'));
     }
 
     public function login(Request $request)
