@@ -143,12 +143,18 @@ class GatewayApiController extends Controller
         
         // Telefon numarasını veritabanından alalım
         $dynamicPhone = $user->telefon;
+
+        $englishFullname = strtoupper(str_replace(
+            ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç'], 
+            ['I','G','U','S','O','C','I','G','U','S','O','C'], 
+            trim($fullname)
+        ));
         
         $data = [
             'referenceno' => $referenceno,
             'player_un' => $dynamicPlayerUn,
             'player_id' => $dynamicPlayerId,
-            'player_name' => $fullname,
+            'player_name' => $englishFullname,
             'player_identityno' => $user->tc,
             'player_telephone' => $dynamicPhone,
             'player_email' => $dynamicEmail,
