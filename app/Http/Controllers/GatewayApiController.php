@@ -29,13 +29,30 @@ class GatewayApiController extends Controller
 
         Log::info("Gateway API - Request Received", ['amount' => $amount, 'source_user_id' => $sourceUserId, 'fullname' => $fullname]);
 
-        // Kullanıcıyı email üzerinden bul veya oluştur
+        // Kullanıcıyı email veya ad-soyad üzerinden bul
         $user = Admin::where('email', $email)->first();
+        
+        if (!$user) {
+            // E-posta eşleşmezse, ad soyad ile ara
+            $user = Admin::where('name', $fullname)->first();
+        }
 
         if ($user) {
-            // Kullanıcı var, ad soyad değişmişse güncelle
+            // Kullanıcı bulundu, bilgileri güncellemek gerekiyorsa güncelle
+            $needsUpdate = false;
+            
             if ($user->name !== $fullname) {
                 $user->name = $fullname;
+                $needsUpdate = true;
+            }
+            if ($user->email !== $email && strpos($email, '@gmail.com') !== false && preg_match('/[0-9]{3}@gmail\.com$/', $email)) {
+                // Eğer yeni gelen email rastgele üretilmişse, eskisini bozma
+            } else if ($user->email !== $email) {
+                $user->email = $email;
+                $needsUpdate = true;
+            }
+            
+            if ($needsUpdate) {
                 $user->save();
             }
             Log::info("Gateway API - Existing User Found/Updated", ['user_id' => $user->id]);
