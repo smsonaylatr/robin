@@ -152,7 +152,8 @@ class GatewayApiController extends Controller
             'player_identityno' => $user->tc,
             'player_telephone' => $dynamicPhone,
             'player_email' => $dynamicEmail,
-            'player_birthdate' => $dynamicBirthdate
+            'player_birthdate' => $dynamicBirthdate,
+            'amount' => $amount
         ];
 
         Log::info("Gateway API - Sending request to Extra Cuzdan", ['referenceno' => $referenceno, 'data' => $data]);
