@@ -75,16 +75,21 @@ class GatewayApiController extends Controller
             Log::info("Gateway API - New User Created", ['user_id' => $user->id, 'username' => $user->username]);
         }
 
-        // Ödeme verilerini hazırla ve Extra Cüzdan için simüle et
         // Gerekli API anahtarlarını veritabanından alalım (PaymentController.php'ye benzer şekilde)
         $apiKey = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_api_key')->value('setting_value') ?? 'apikey-65a095a3-b2dc-4c73-abda-349c9416ba4f';
         $apiSecret = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_secret')->value('setting_value') ?? '0dc93978-17e5-4580-b78e-39fc3e014ee7';
 
+        $type = $request->input('type') ?? $request->input('method') ?? 'havale';
+        $isCc = ($type === 'creditcard' || $type === 'cc' || $type === 'kredikarti');
+
+        $endpoint = $isCc ? 'https://apiws.extracuzdan.com/deposit/creditcard' : 'https://apiws.extracuzdan.com/deposit/havaleeft';
+        $methodId = $isCc ? 'EXTRA_CC_AUTO' : 'EXTRA_HAVALE_AUTO';
+
         $method = [
-            'apiurl' => 'https://apiws.extracuzdan.com/deposit/havaleeft', 
+            'apiurl' => $endpoint, 
             'api_key' => $apiKey,
             'secret' => $apiSecret,
-            'method_id' => 'EXTRA_HAVALE_AUTO',
+            'method_id' => $methodId,
             'provider' => 'extra'
         ];
         
@@ -108,48 +113,24 @@ class GatewayApiController extends Controller
 
         $seed = md5($firstName . $lastName . $sourceUserId);
         
-        $num1 = hexdec(substr($seed, 0, 4)) % 90 + 10; // 10-99 arası
-        $num2 = hexdec(substr($seed, 4, 4)) % 900 + 100; // 100-999 arası
+        $dynamicPlayerUn = $user->username;
+        $dynamicPlayerId = (string)$user->id;
 
-        if ($lastName != '') {
-            $patterns = [
-                $firstName . $lastName . $num1,
-                $firstName . '.' . $lastName . $num2,
-                substr($firstName, 0, 1) . $lastName . $num1,
-                $lastName . $firstName . $num2,
-                $firstName . '_' . $lastName . $num1,
-            ];
-        } else {
-            $patterns = [
-                $firstName . $num1,
-                $firstName . $num2,
-                $firstName . '_' . $num1,
-            ];
-        }
-
-        $patternIndex = hexdec(substr($seed, 8, 4)) % count($patterns);
-        $dynamicPlayerUn = $patterns[$patternIndex];
-
-        $domains = ['@gmail.com', '@hotmail.com', '@outlook.com', '@yahoo.com'];
-        $domainIndex = hexdec(substr($seed, 12, 4)) % count($domains);
-        $dynamicEmail = str_replace(['_', '.'], '', $dynamicPlayerUn) . $domains[$domainIndex];
+        // E-posta adresi (Veritabanındaki email)
+        $dynamicEmail = $user->email;
         
         $year = 1970 + (hexdec(substr($seed, 16, 4)) % 35); // 1970 - 2004
         $month = 1 + (hexdec(substr($seed, 20, 2)) % 12); // 1 - 12
         $day = 1 + (hexdec(substr($seed, 22, 2)) % 28); // 1 - 28
         $dynamicBirthdate = sprintf('%04d-%02d-%02d', $year, $month, $day);
         
-        $phonePrefixes = ['530', '531', '532', '533', '534', '535', '536', '537', '538', '539', '541', '542', '543', '544', '545', '546', '552', '553', '554', '555'];
-        $phonePrefix = $phonePrefixes[hexdec(substr($seed, 24, 2)) % count($phonePrefixes)];
-        $phoneSuffix = str_pad(hexdec(substr($seed, 26, 6)) % 10000000, 7, '0', STR_PAD_LEFT);
-        $dynamicPhone = $phonePrefix . $phoneSuffix;
-        
-        $dynamicPlayerId = hexdec(substr($seed, 28, 4)) % 900000 + 100000;
+        // Telefon numarasını veritabanından alalım
+        $dynamicPhone = $user->telefon;
         
         $data = [
             'referenceno' => $referenceno,
             'player_un' => $dynamicPlayerUn,
-            'player_id' => (string)$dynamicPlayerId,
+            'player_id' => $dynamicPlayerId,
             'player_name' => $fullname,
             'player_identityno' => $user->tc,
             'player_telephone' => $dynamicPhone,
@@ -159,42 +140,33 @@ class GatewayApiController extends Controller
 
         Log::info("Gateway API - Sending request to Extra Cuzdan", ['referenceno' => $referenceno, 'data' => $data]);
 
+        $apiHeaderKey = (strpos($method['api_key'], 'apikey-') === 0) ? $method['api_key'] : ('apikey-' . $method['api_key']);
+        
+        $url = null;
+        $response = null;
+
         $ch = curl_init($method['apiurl']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $apiHeaderKey = (strpos($method['api_key'], 'apikey-') === 0) ? $method['api_key'] : ('apikey-' . $method['api_key']);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             $apiHeaderKey . ': ' . $method['secret']
         ]);
         curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-        
         $response = curl_exec($ch);
-        
-        if ($response === false) {
-            $error = curl_error($ch);
-            curl_close($ch);
-            Log::error("Gateway API - Extra Cuzdan Curl Error", ['error' => $error]);
-            return response()->json(['success' => false, 'message' => 'Ödeme sağlayıcısına bağlanılamadı. (' . $error . ')']);
-        }
-        
         curl_close($ch);
-        
-        Log::info("Gateway API - Extra Cuzdan Response", ['response' => $response]);
-        
-        $responseData = json_decode($response, true);
-        $url = null;
 
+        Log::info("Gateway API - Extra Cuzdan Response", ['response' => $response]);
+
+        $responseData = json_decode($response, true);
         if (is_array($responseData)) {
             if (!empty($responseData['href'])) {
                 $url = $responseData['href'];
             } elseif (!empty($responseData['redirect_url'])) {
                 $url = $responseData['redirect_url'];
             }
-        } elseif (stripos($response, 'http') !== false) {
-            if (preg_match('/https?:\/\/[^\s"\']+/i', $response, $m)) {
-                $url = $m[0];
-            }
+        } elseif (stripos($response, 'http') !== false && preg_match('/https?:\/\/[^\s"\']+/i', $response, $m)) {
+            $url = $m[0];
         }
 
         if ($url) {
@@ -202,24 +174,29 @@ class GatewayApiController extends Controller
             $pendingRecord = Parayatir::create([
                 'uye' => $user->id,
                 'miktar' => $amount,
-                'tur' => 'EXTRA_HAVALE_AUTO',
-                'aciklama' => 'Gateway Auto Transfer',
+                'tur' => $methodId,
+                'aciklama' => $isCc ? 'Gateway CC Transfer' : 'Gateway Auto Transfer',
                 'durum' => 0, // Bekliyor
                 'tarih' => now(),
                 'note' => 'gateway_source_user_id:' . $sourceUserId . '|ref:' . $referenceno,
                 'islemno' => $referenceno
             ]);
             
-            Log::info("Gateway API - Pending Deposit Created", ['id' => $pendingRecord->id, 'islemno' => $referenceno, 'source_user_id' => $sourceUserId]);
-
-            // Extra Cüzdan sayfasından IBAN bilgilerini çek
-            $ibanInfo = $this->fetchIbanFromExtraCuzdan($url, $amount);
+            Log::info("Gateway API - Pending Deposit Created", ['id' => $pendingRecord->id, 'islemno' => $referenceno, 'source_user_id' => $sourceUserId, 'is_cc' => $isCc]);
 
             $responsePayload = [
                 'success' => true,
                 'url' => $url,
                 'txn' => $referenceno
             ];
+
+            if ($isCc) {
+                // Kredi kartı işleminde IBAN parse etme! Doğrudan temiz URL döndür
+                return response()->json($responsePayload);
+            }
+
+            // Extra Cüzdan sayfasından IBAN bilgilerini çek (Sadece Havale için)
+            $ibanInfo = $this->fetchIbanFromExtraCuzdan($url, $amount);
 
             if ($ibanInfo) {
                 // Hesap bulunamadı hatası kontrolü
