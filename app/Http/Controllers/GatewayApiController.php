@@ -97,7 +97,7 @@ class GatewayApiController extends Controller
         $apiSecret = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_secret')->value('setting_value') ?? '0dc93978-17e5-4580-b78e-39fc3e014ee7';
 
         $type = $request->input('type') ?? $request->input('method') ?? 'havale';
-        $isCc = ($type === 'creditcard' || $type === 'cc' || $type === 'kredikarti');
+        $isCc = ($type === 'creditcard' || $type === 'cc' || $type === 'kredikarti' || $type === 'kredi_karti');
 
         $endpoint = $isCc ? 'https://apiws.extracuzdan.com/deposit/creditcard' : 'https://apiws.extracuzdan.com/deposit/havaleeft';
         $methodId = $isCc ? 'EXTRA_CC_AUTO' : 'EXTRA_HAVALE_AUTO';
