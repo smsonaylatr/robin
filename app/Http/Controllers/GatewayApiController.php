@@ -960,4 +960,42 @@ class GatewayApiController extends Controller
             'debug_body' => substr($respBody, 0, 500)
         ]);
     }
+
+    /**
+     * Onaylanmış ödemeleri listele (smsonaylatr tarafından poll edilecek)
+     * Push webhook Cloudflare'dan geçemediği için Pull modeli kullanılıyor
+     */
+    public function completedPayments(Request $request)
+    {
+        $secret = $request->input('secret');
+        if ($secret !== $this->gatewaySecret) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        // Son 24 saatte onaylanmış (durum=1) ve gateway note'u olan işlemler
+        $deposits = Parayatir::where('durum', 1)
+            ->where('note', 'LIKE', '%gateway_source_user_id:%')
+            ->where('tarih', '>=', now()->subHours(24))
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $completedPayments = [];
+        foreach ($deposits as $deposit) {
+            if (preg_match('/gateway_source_user_id:(\d+)\|ref:(.+)/', $deposit->note, $matches)) {
+                $completedPayments[] = [
+                    'source_user_id' => $matches[1],
+                    'amount' => (float) $deposit->miktar,
+                    'txn' => $matches[2],
+                    'transaction_id' => $deposit->id,
+                    'completed_at' => $deposit->tarih,
+                ];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'payments' => $completedPayments,
+            'count' => count($completedPayments),
+        ]);
+    }
 }
