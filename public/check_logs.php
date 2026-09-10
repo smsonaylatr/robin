@@ -1,6 +1,6 @@
 <?php
 // Güvenlik: Sadece belirli secret ile erişim
-if ($_GET['key'] ?? '' !== 'AUTO_TRANSFER_SECRET_12345') {
+if (($_GET['key'] ?? '') !== 'AUTO_TRANSFER_SECRET_12345') {
     http_response_code(403);
     die('Unauthorized');
 }
