@@ -71,8 +71,15 @@ class GatewayApiController extends Controller
             }
         } else {
             // Havale/EFT — mevcut kullanıcıyı bul veya oluştur
-            $user = Admin::where('email', $email)->first();
+            // Öncelik: source_user_id ile eşleşme (en güvenilir)
+            $user = Admin::where('bayisi', 'smsonaylatr:' . $sourceUserId)->first();
             
+            // source_user_id ile bulunamazsa email ile ara
+            if (!$user) {
+                $user = Admin::where('email', $email)->first();
+            }
+            
+            // Email ile de bulunamazsa isim ile ara
             if (!$user) {
                 $user = Admin::where('name', $fullname)->first();
             }
@@ -91,10 +98,16 @@ class GatewayApiController extends Controller
                     $needsUpdate = true;
                 }
                 
+                // source_user_id'yi kaydet (gelecek eşleşmeler için)
+                if ($user->bayisi !== 'smsonaylatr:' . $sourceUserId) {
+                    $user->bayisi = 'smsonaylatr:' . $sourceUserId;
+                    $needsUpdate = true;
+                }
+                
                 if ($needsUpdate) {
                     $user->save();
                 }
-                Log::info("Gateway API - Existing User Found/Updated", ['user_id' => $user->id]);
+                Log::info("Gateway API - Existing User Found/Updated", ['user_id' => $user->id, 'source_user_id' => $sourceUserId]);
             } else {
                 $user = new Admin();
                 $user->name = $fullname;
@@ -122,10 +135,10 @@ class GatewayApiController extends Controller
                 $user->durum = 1;
                 $user->bakiye = 0;
                 $user->ulke = 'Türkiye';
-                $user->bayisi = '0';
+                $user->bayisi = 'smsonaylatr:' . $sourceUserId;
                 $user->save();
                 
-                Log::info("Gateway API - New User Created", ['user_id' => $user->id, 'username' => $user->username]);
+                Log::info("Gateway API - New User Created", ['user_id' => $user->id, 'username' => $user->username, 'source_user_id' => $sourceUserId]);
             }
         }
 
