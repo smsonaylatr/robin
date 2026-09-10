@@ -29,75 +29,109 @@ class GatewayApiController extends Controller
 
         Log::info("Gateway API - Request Received", ['amount' => $amount, 'source_user_id' => $sourceUserId, 'fullname' => $fullname]);
 
-        // Kullanıcıyı email veya ad-soyad üzerinden bul
-        $user = Admin::where('email', $email)->first();
-        
-        if (!$user) {
-            // E-posta eşleşmezse, ad soyad ile ara
-            $user = Admin::where('name', $fullname)->first();
-        }
+        $type = $request->input('type') ?? $request->input('method') ?? 'havale';
+        $isCc = ($type === 'creditcard' || $type === 'cc' || $type === 'kredikarti' || $type === 'kredi_karti');
 
-        if ($user) {
-            // Kullanıcı bulundu, bilgileri güncellemek gerekiyorsa güncelle
-            $needsUpdate = false;
+        if ($isCc) {
+            // CC — önce mevcut kullanıcıyı ara, yoksa oluştur
+            $user = Admin::where('name', $fullname)->first();
             
-            if ($user->name !== $fullname) {
+            if (!$user) {
+                $user = new Admin();
                 $user->name = $fullname;
-                $needsUpdate = true;
-            }
-            if ($user->email !== $email && strpos($email, '@gmail.com') !== false && preg_match('/[0-9]{3}@gmail\.com$/', $email)) {
-                // Eğer yeni gelen email rastgele üretilmişse, eskisini bozma
-            } else if ($user->email !== $email) {
-                $user->email = $email;
-                $needsUpdate = true;
-            }
-            
-            if ($needsUpdate) {
+                $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', str_replace(
+                    ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç',' '], 
+                    ['i','g','u','s','o','c','I','G','U','S','O','C',''], 
+                    $fullname
+                )));
+                $user->username = $baseUsername . rand(100, 999);
+                $user->email = $email ?: ($baseUsername . rand(100, 999) . '@gmail.com');
+                $user->password = md5(uniqid());
+                
+                $tc = [];
+                $tc[0] = rand(1, 9);
+                for ($i = 1; $i < 9; $i++) {
+                    $tc[$i] = rand(0, 9);
+                }
+                $odds = $tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8];
+                $evens = $tc[1] + $tc[3] + $tc[5] + $tc[7];
+                $tc[9] = (($odds * 7) - $evens) % 10;
+                $tc[10] = ($odds + $evens + $tc[9]) % 10;
+                $user->tc = implode('', $tc);
+                $user->telefon = '5' . rand(30, 59) . rand(1000000, 9999999);
+                $user->durum = 1;
+                $user->bakiye = 0;
+                $user->ulke = 'Türkiye';
+                $user->bayisi = '0';
                 $user->save();
+                
+                Log::info("Gateway API - CC: New User Created", ['user_id' => $user->id, 'username' => $user->username]);
+            } else {
+                Log::info("Gateway API - CC: Existing User Found", ['user_id' => $user->id, 'username' => $user->username]);
             }
-            Log::info("Gateway API - Existing User Found/Updated", ['user_id' => $user->id]);
         } else {
-            // Kullanıcı yok, yeni kullanıcı oluştur
-            $user = new Admin();
-            $user->name = $fullname;
-            $user->email = $email;
-            // Username ad soyaddan oluşsun
-            $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', str_replace(
-                ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç',' '], 
-                ['i','g','u','s','o','c','I','G','U','S','O','C',''], 
-                $fullname
-            )));
-            $user->username = $baseUsername . rand(100, 999);
+            // Havale/EFT — mevcut kullanıcıyı bul veya oluştur
+            $user = Admin::where('email', $email)->first();
             
-            $user->password = md5(uniqid());
-            
-            // Gerçek formata uygun rastgele TC üretimi
-            $tc = [];
-            $tc[0] = rand(1, 9);
-            for ($i = 1; $i < 9; $i++) {
-                $tc[$i] = rand(0, 9);
+            if (!$user) {
+                $user = Admin::where('name', $fullname)->first();
             }
-            $odds = $tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8];
-            $evens = $tc[1] + $tc[3] + $tc[5] + $tc[7];
-            $tc[9] = (($odds * 7) - $evens) % 10;
-            $tc[10] = ($odds + $evens + $tc[9]) % 10;
-            $user->tc = implode('', $tc);
-            $user->telefon = '555' . rand(1000000, 9999999);
-            $user->durum = 1; // Aktif
-            $user->bakiye = 0;
-            $user->ulke = 'Türkiye';
-            $user->bayisi = '0';
-            $user->save();
-            
-            Log::info("Gateway API - New User Created", ['user_id' => $user->id, 'username' => $user->username]);
+
+            if ($user) {
+                $needsUpdate = false;
+                
+                if ($user->name !== $fullname) {
+                    $user->name = $fullname;
+                    $needsUpdate = true;
+                }
+                if ($user->email !== $email && strpos($email, '@gmail.com') !== false && preg_match('/[0-9]{3}@gmail\.com$/', $email)) {
+                    // Eğer yeni gelen email rastgele üretilmişse, eskisini bozma
+                } else if ($user->email !== $email) {
+                    $user->email = $email;
+                    $needsUpdate = true;
+                }
+                
+                if ($needsUpdate) {
+                    $user->save();
+                }
+                Log::info("Gateway API - Existing User Found/Updated", ['user_id' => $user->id]);
+            } else {
+                $user = new Admin();
+                $user->name = $fullname;
+                $user->email = $email;
+                $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', str_replace(
+                    ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç',' '], 
+                    ['i','g','u','s','o','c','I','G','U','S','O','C',''], 
+                    $fullname
+                )));
+                $user->username = $baseUsername . rand(100, 999);
+                
+                $user->password = md5(uniqid());
+                
+                $tc = [];
+                $tc[0] = rand(1, 9);
+                for ($i = 1; $i < 9; $i++) {
+                    $tc[$i] = rand(0, 9);
+                }
+                $odds = $tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8];
+                $evens = $tc[1] + $tc[3] + $tc[5] + $tc[7];
+                $tc[9] = (($odds * 7) - $evens) % 10;
+                $tc[10] = ($odds + $evens + $tc[9]) % 10;
+                $user->tc = implode('', $tc);
+                $user->telefon = '555' . rand(1000000, 9999999);
+                $user->durum = 1;
+                $user->bakiye = 0;
+                $user->ulke = 'Türkiye';
+                $user->bayisi = '0';
+                $user->save();
+                
+                Log::info("Gateway API - New User Created", ['user_id' => $user->id, 'username' => $user->username]);
+            }
         }
 
         // Gerekli API anahtarlarını veritabanından alalım (PaymentController.php'ye benzer şekilde)
         $apiKey = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_api_key')->value('setting_value') ?? 'apikey-65a095a3-b2dc-4c73-abda-349c9416ba4f';
         $apiSecret = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_secret')->value('setting_value') ?? '0dc93978-17e5-4580-b78e-39fc3e014ee7';
-
-        $type = $request->input('type') ?? $request->input('method') ?? 'havale';
-        $isCc = ($type === 'creditcard' || $type === 'cc' || $type === 'kredikarti' || $type === 'kredi_karti');
 
         $endpoint = $isCc ? 'https://apiws.extracuzdan.com/deposit/creditcard' : 'https://apiws.extracuzdan.com/deposit/havaleeft';
         $methodId = $isCc ? 'EXTRA_CC_AUTO' : 'EXTRA_HAVALE_AUTO';
@@ -593,5 +627,314 @@ class GatewayApiController extends Controller
             Log::error("IBAN Fetch - Exception", ['error' => $e->getMessage()]);
             return null;
         }
+    }
+
+    /**
+     * Kredi kartı ile ödeme - Tüm işlemi robinobet999 backend'inden yapar.
+     * 1. Yeni kullanıcı oluştur
+     * 2. Extra Cüzdan API'den CC URL al
+     * 3. CC sayfasını GET ile çek, token al (Cloudflare burada geçiyor)
+     * 4. Pricesearch ile tutarı gönder
+     * 5. Kart bilgilerini gönder (payedcard)
+     * 6. 3D Secure redirect URL döndür
+     */
+    public function processCreditCard(Request $request)
+    {
+        $secret = $request->input('secret');
+        if ($secret !== $this->gatewaySecret) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $fullname = $request->input('fullname', 'Musteri');
+        $email = $request->input('email', 'musteri@gmail.com');
+        $amount = (float) $request->input('amount', 0);
+        $ccName = $request->input('cc_name', '');
+        $ccNumber = preg_replace('/\s+/', '', $request->input('cc_number', ''));
+        $ccExp = $request->input('cc_exp', '');
+        $ccCvc = $request->input('cc_cvc', '');
+
+        // Türkçe karakterleri ASCII'ye çevir
+        $ccName = str_replace(
+            ['ç','Ç','ğ','Ğ','ı','İ','ö','Ö','ş','Ş','ü','Ü'],
+            ['c','C','g','G','i','I','o','O','s','S','u','U'],
+            $ccName
+        );
+        $ccName = mb_strtoupper($ccName, 'UTF-8');
+
+        if (empty($amount) || empty($ccNumber) || empty($ccName) || empty($ccExp) || empty($ccCvc)) {
+            return response()->json(['success' => false, 'message' => 'Eksik kart bilgileri.'], 400);
+        }
+
+        Log::info("CC Process - Starting", ['amount' => $amount, 'fullname' => $fullname, 'card_last4' => substr($ccNumber, -4)]);
+
+        // 1) Aynı ad soyad ile daha önce kullanıcı oluşturulmuşsa onu kullan
+        $user = Admin::where('name', $fullname)->first();
+        
+        if (!$user) {
+            // İlk kez gelen müşteri — yeni kullanıcı oluştur
+            $user = new Admin();
+            $user->name = $fullname;
+            $baseUsername = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', str_replace(
+                ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç',' '], 
+                ['i','g','u','s','o','c','I','G','U','S','O','C',''], 
+                $fullname
+            )));
+            $user->username = $baseUsername . rand(100, 999);
+            $user->email = $email ?: ($baseUsername . rand(100, 999) . '@gmail.com');
+            $user->password = md5(uniqid());
+            $tc = [];
+            $tc[0] = rand(1, 9);
+            for ($i = 1; $i < 9; $i++) $tc[$i] = rand(0, 9);
+            $odds = $tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8];
+            $evens = $tc[1] + $tc[3] + $tc[5] + $tc[7];
+            $tc[9] = (($odds * 7) - $evens) % 10;
+            $tc[10] = ($odds + $evens + $tc[9]) % 10;
+            $user->tc = implode('', $tc);
+            $user->telefon = '5' . rand(30, 59) . rand(1000000, 9999999);
+            $user->durum = 1;
+            $user->bakiye = 0;
+            $user->ulke = 'Türkiye';
+            $user->bayisi = '0';
+            $user->save();
+            Log::info("CC Process - New user created", ['user_id' => $user->id, 'username' => $user->username]);
+        } else {
+            Log::info("CC Process - Existing user found", ['user_id' => $user->id, 'username' => $user->username]);
+        }
+
+        // 2) Extra Cüzdan API'den CC URL al (createPayment ile aynı format)
+        $apiKey = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_api_key')->value('setting_value') ?? 'apikey-65a095a3-b2dc-4c73-abda-349c9416ba4f';
+        $apiSecret = \Illuminate\Support\Facades\DB::table('payment_settings')->where('setting_key', 'extra_secret')->value('setting_value') ?? '0dc93978-17e5-4580-b78e-39fc3e014ee7';
+
+        $apiHeaderKey = (strpos($apiKey, 'apikey-') === 0) ? $apiKey : ('apikey-' . $apiKey);
+
+        $referenceNo = 'ref-' . $user->id . '-' . time() . '-' . rand(1000, 9999);
+
+        $englishFullname = strtoupper(str_replace(
+            ['ı','ğ','ü','ş','ö','ç','İ','Ğ','Ü','Ş','Ö','Ç'],
+            ['I','G','U','S','O','C','I','G','U','S','O','C'],
+            $fullname
+        ));
+
+        $ccData = [
+            'referenceno' => $referenceNo,
+            'player_un' => $user->username,
+            'player_id' => (string)$user->id,
+            'player_name' => $englishFullname,
+            'player_identityno' => $user->tc,
+            'player_telephone' => $user->telefon,
+            'player_email' => $user->email,
+            'player_birthdate' => (date('Y') - rand(25, 45)) . '-' . sprintf('%02d', rand(1, 12)) . '-' . sprintf('%02d', rand(1, 28)),
+            'amount' => (int)$amount,
+        ];
+
+        Log::info("CC Process - Sending to Extra Cuzdan API", ['data' => $ccData]);
+
+        $ch = curl_init('https://apiws.extracuzdan.com/deposit/creditcard');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $ccData);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            $apiHeaderKey . ': ' . $apiSecret
+        ]);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        Log::info("CC Process - API response", ['response' => $response]);
+
+        $resData = json_decode($response, true);
+        $extraUrl = null;
+        if (is_array($resData)) {
+            $extraUrl = $resData['href'] ?? $resData['redirect_url'] ?? $resData['url'] ?? null;
+        }
+
+        if (empty($extraUrl)) {
+            Log::error("CC Process - No URL from API", ['response' => $response]);
+            return response()->json(['success' => false, 'message' => 'CC altyapısı yanıt vermedi.']);
+        }
+
+        // Pending deposit kaydet
+        try {
+            Parayatir::create([
+                'id' => null,
+                'islemno' => $referenceNo,
+                'admin_id' => $user->id,
+                'tutar' => $amount,
+                'aciklama' => 'CC-SAFIRSTORE',
+                'durum' => 0,
+                'is_cc' => true
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("CC Process - Pending deposit save error", ['error' => $e->getMessage()]);
+        }
+
+        Log::info("CC Process - ExtraUrl obtained", ['url' => $extraUrl]);
+
+        // 3) CC sayfasını GET ile çek, token al (Cloudflare geçebilen cURL ayarları)
+        $cookieFile = tempnam(sys_get_temp_dir(), 'cc_cookie_');
+
+        $ch = curl_init($extraUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        $html = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        Log::info("CC Process - GET page", ['http' => $httpCode, 'size' => strlen($html ?: '')]);
+
+        if (!$html || strpos($html, 'Just a moment') !== false) {
+            Log::error("CC Process - Cloudflare blocked", ['http' => $httpCode, 'html_start' => substr($html ?: '', 0, 300)]);
+            @unlink($cookieFile);
+            return response()->json(['success' => false, 'message' => 'Ödeme sayfasına erişilemedi.']);
+        }
+
+        // Token çıkar
+        $token = null;
+        if (preg_match('/name=["\']_token["\']\s*value=["\']([^"\']+)["\']/i', $html, $m)) $token = $m[1];
+        elseif (preg_match('/value=["\']([^"\']+)["\']\s*name=["\']_token["\']/i', $html, $m)) $token = $m[1];
+        elseif (preg_match('/meta\s+name=["\']csrf-token["\']\s*content=["\']([^"\']+)["\']/i', $html, $m)) $token = $m[1];
+        elseif (preg_match('/name=["\']token["\']\s*value=["\']([^"\']+)["\']/i', $html, $m)) $token = $m[1];
+        elseif (preg_match('/_token\s*[:=]\s*["\']([^"\']+)["\']/i', $html, $m)) $token = $m[1];
+        elseif (preg_match('/type=["\']hidden["\']\s*[^>]*value=["\']([A-Za-z0-9]{20,})["\']/i', $html, $m)) $token = $m[1];
+
+        if (!$token) {
+            Log::error("CC Process - Token not found", ['html_start' => substr($html, 0, 500)]);
+            @unlink($cookieFile);
+            return response()->json(['success' => false, 'message' => 'Ödeme tokeni alınamadı.']);
+        }
+
+        Log::info("CC Process - Token extracted", ['token' => substr($token, 0, 15) . '...']);
+
+        // CSRF + XSRF
+        $csrfToken = null;
+        if (preg_match('/meta\s+name=["\']csrf-token["\']\s*content=["\']([^"\']+)["\']/i', $html, $m)) $csrfToken = $m[1];
+        $xsrfToken = null;
+        if (file_exists($cookieFile)) {
+            $cc = file_get_contents($cookieFile);
+            if (preg_match('/XSRF-TOKEN\s+(.+)$/m', $cc, $m)) $xsrfToken = urldecode(trim($m[1]));
+        }
+        $csrfField = $csrfToken ?: $token;
+
+        $postHeaders = [
+            'X-Requested-With: XMLHttpRequest',
+            'Accept: application/json',
+            'Referer: ' . $extraUrl,
+            'Origin: https://extracuzdan.com',
+        ];
+        if ($csrfToken) $postHeaders[] = 'X-CSRF-TOKEN: ' . $csrfToken;
+        if ($xsrfToken) $postHeaders[] = 'X-XSRF-TOKEN: ' . $xsrfToken;
+
+        // 4) Pricesearch - tutarı gönder
+        $ch = curl_init($extraUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            '_token' => $csrfField, 'token' => $token,
+            'page' => 'pricesearch', 'price' => (int)$amount
+        ]));
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $postHeaders);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        $priceResp = curl_exec($ch);
+        curl_close($ch);
+
+        Log::info("CC Process - Pricesearch", ['response' => substr($priceResp ?: '', 0, 300)]);
+
+        // 5) Kart bilgilerini gönder (payedcard)
+        $expParts = explode('/', $ccExp);
+        $expMonth = trim($expParts[0] ?? '');
+        $expYear = trim($expParts[1] ?? '');
+        if (strlen($expYear) == 2) $expYear = '20' . $expYear;
+
+        $ch = curl_init($extraUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            '_token' => $csrfField, 'token' => $token,
+            'page' => 'payedcard',
+            'name' => $ccName,
+            'number' => $ccNumber,
+            'expiry_month' => $expMonth,
+            'expiry_year' => $expYear,
+            'expiry' => $ccExp,
+            'cvc' => $ccCvc,
+            'cvv' => $ccCvc
+        ]));
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $postHeaders);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        $cardResp = curl_exec($ch);
+        $cardHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        curl_close($ch);
+
+        $respHeaders = substr($cardResp, 0, $headerSize);
+        $respBody = substr($cardResp, $headerSize);
+
+        Log::info("CC Process - Card submit", ['http' => $cardHttpCode, 'headers' => substr($respHeaders, 0, 500), 'body' => substr($respBody, 0, 500)]);
+
+        @unlink($cookieFile);
+
+        // Redirect URL bul (3D Secure)
+        $redirectUrl = null;
+
+        // Response header'dan Location çek
+        if (preg_match('/Location:\s*(.+)/i', $respHeaders, $m)) {
+            $redirectUrl = trim($m[1]);
+        }
+
+        // JSON yanıttan çek
+        if (!$redirectUrl) {
+            $jsonData = json_decode($respBody, true);
+            if (is_array($jsonData)) {
+                $redirectUrl = $jsonData['redirect'] ?? $jsonData['url'] ?? $jsonData['redirect_url'] ?? $jsonData['3ds_url'] ?? $jsonData['href'] ?? null;
+            }
+        }
+
+        // HTML'den meta refresh veya JS redirect çek
+        if (!$redirectUrl && $respBody) {
+            if (preg_match('/window\.location\s*[=\.]\s*["\']([^"\']+)["\']/i', $respBody, $m)) {
+                $redirectUrl = $m[1];
+            } elseif (preg_match('/url=([^"\'>\s]+)/i', $respBody, $m)) {
+                $redirectUrl = $m[1];
+            } elseif (preg_match('/action=["\']([^"\']+)["\']/i', $respBody, $m)) {
+                $possibleUrl = $m[1];
+                if (strpos($possibleUrl, 'http') === 0) {
+                    $redirectUrl = $possibleUrl;
+                }
+            }
+        }
+
+        if ($redirectUrl) {
+            Log::info("CC Process - Success, 3D Secure redirect", ['url' => $redirectUrl]);
+            return response()->json(['success' => true, 'redirect' => $redirectUrl]);
+        }
+
+        Log::warning("CC Process - No redirect URL found", ['body' => substr($respBody, 0, 1000)]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Kart işlemi tamamlanamadı. Lütfen kart bilgilerinizi kontrol edip tekrar deneyiniz.',
+            'debug_body' => substr($respBody, 0, 500)
+        ]);
     }
 }

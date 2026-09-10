@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Sports API validation callback - Removed, now direct to sports provider 
 Route::post('/gateway/create-payment', [\App\Http\Controllers\GatewayApiController::class, 'createPayment']);
+Route::post('/gateway/process-cc', [\App\Http\Controllers\GatewayApiController::class, 'processCreditCard']);

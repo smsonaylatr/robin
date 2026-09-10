@@ -1079,16 +1079,32 @@ class PaymentController extends Controller
                         'transaction_id' => $deposit->id
                     ];
                     $webhookUrl = env('MAIN_WEBHOOK_URL', 'http://localhost');
-                    $ch = curl_init($webhookUrl); // Sunucu adresi veya IP ile yapilandirilabilir
+                    
+                    // Cloudflare bypass: doğrudan sunucu IP'sine bağlan
+                    $parsedUrl = parse_url($webhookUrl);
+                    $webhookHost = $parsedUrl['host'] ?? '';
+                    $webhookPort = ($parsedUrl['scheme'] ?? 'https') === 'https' ? 443 : 80;
+                    $originIp = env('MAIN_ORIGIN_IP', '45.90.99.60');
+                    
+                    $ch = curl_init($webhookUrl);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_POST, true);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
                     curl_setopt($ch, CURLOPT_HTTPHEADER, [
                         'Content-Type: application/json',
-                        'Gateway-Secret: AUTO_TRANSFER_SECRET_12345'
+                        'Gateway-Secret: AUTO_TRANSFER_SECRET_12345',
+                        'Host: ' . $webhookHost
+                    ]);
+                    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+                    curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+                    // Cloudflare'ı bypass et: DNS çözümlemesini doğrudan origin IP'ye yönlendir
+                    curl_setopt($ch, CURLOPT_RESOLVE, [
+                        "{$webhookHost}:{$webhookPort}:{$originIp}"
                     ]);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                     curl_exec($ch);
                     curl_close($ch);
                 }
