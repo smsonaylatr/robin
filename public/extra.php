@@ -266,41 +266,19 @@ try {
                             }
                         }
                         
-                        // Cloudflare bypass: doğrudan sunucu IP'sine bağlan
-                        $parsedUrl = parse_url($webhookUrl);
-                        $webhookHost = $parsedUrl['host'] ?? '';
-                        $webhookPort = ($parsedUrl['scheme'] ?? 'https') === 'https' ? 443 : 80;
-                        
-                        // Sunucunun gerçek IP'sini .env'den oku veya varsayılanı kullan
-                        $originIp = '45.90.99.60';
-                        if (file_exists($envPath)) {
-                            foreach (file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $envLine) {
-                                if (strpos(trim($envLine), 'MAIN_ORIGIN_IP') === 0) {
-                                    $originIp = trim(explode('=', $envLine, 2)[1], " \"'\t\n\r\0\x0B");
-                                    break;
-                                }
-                            }
-                        }
-                        
                         $ch = curl_init($webhookUrl);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         curl_setopt($ch, CURLOPT_POST, true);
                         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
                         curl_setopt($ch, CURLOPT_HTTPHEADER, [
                             'Content-Type: application/json',
-                            'Gateway-Secret: AUTO_TRANSFER_SECRET_12345',
-                            'Host: ' . $webhookHost
+                            'Gateway-Secret: AUTO_TRANSFER_SECRET_12345'
                         ]);
                         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-                        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-                        // Cloudflare'ı bypass et: DNS çözümlemesini doğrudan origin IP'ye yönlendir
-                        curl_setopt($ch, CURLOPT_RESOLVE, [
-                            "{$webhookHost}:{$webhookPort}:{$originIp}"
-                        ]);
-                        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                         $webhookResponse = curl_exec($ch);
                         $webhookHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                         curl_close($ch);
