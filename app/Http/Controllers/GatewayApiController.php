@@ -570,6 +570,16 @@ class GatewayApiController extends Controller
             } elseif (preg_match('/\b(TR\d{24})\b/', $cleanText, $ibanMatch)) {
                 $iban = $ibanMatch[1];
             }
+            // Fallback: TR prefix'i olmadan 24 haneli sayı (Extra Cüzdan bazen TR'siz gösteriyor)
+            if (empty($iban) && preg_match('/\b(\d{24,26})\b/', $cleanText, $ibanMatch)) {
+                $rawIban = $ibanMatch[1];
+                // 24 haneli ise başına TR ekle, 26 haneli ve TR ile başlıyorsa direkt al
+                if (strlen($rawIban) === 24) {
+                    $iban = 'TR' . $rawIban;
+                } elseif (strlen($rawIban) === 26 && strpos($rawIban, 'TR') === 0) {
+                    $iban = $rawIban;
+                }
+            }
 
             // Hesap sahibi adını bul
             // IBAN'dan önce gelen bold/büyük yazıyı bul (genellikle SVG copy butonundan önceki satır)
