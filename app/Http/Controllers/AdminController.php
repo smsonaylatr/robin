@@ -459,8 +459,19 @@ class AdminController extends Controller
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-                curl_exec($ch);
+                $webhookResponse = curl_exec($ch);
+                $webhookHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $webhookError = curl_error($ch);
                 curl_close($ch);
+                
+                \Log::info("GATEWAY WEBHOOK SENT", [
+                    'url' => $webhookUrl,
+                    'origin_ip' => $originIp,
+                    'http_code' => $webhookHttpCode,
+                    'response' => substr($webhookResponse ?: '', 0, 500),
+                    'curl_error' => $webhookError,
+                    'post_data' => $postData
+                ]);
             }
         }
 
